@@ -1,14 +1,14 @@
-PHONY := all package clean
+PHONY := 	all package clean
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-CC := arm-vita-eabi-gcc
-CXX := arm-vita-eabi-g++
-STRIP := arm-vita-eabi-strip
+CC := 		arm-vita-eabi-gcc
+CXX := 		arm-vita-eabi-g++
+STRIP :=	arm-vita-eabi-strip
 
-PROJECT_TITLE := VITAident
-PROJECT_TITLEID := FFFF00016
+PROJECT_TITLE := 	VITAident
+PROJECT_TITLEID := 	FFFF00016
 
-PROJECT := VITAident
+PROJECT :=	VITAident
 CXXFLAGS += -std=c++11
 
 SRC_C :=$(call rwildcard, src/, *.c)
@@ -16,6 +16,8 @@ SRC_CPP :=$(call rwildcard, src/, *.cpp)
 
 OBJ_DIRS := $(addprefix out/, $(dir $(SRC_C:src/%.c=%.o))) $(addprefix out/, $(dir $(SRC_CPP:src/%.cpp=%.o)))
 OBJS := $(addprefix out/, $(SRC_C:src/%.c=%.o)) $(addprefix out/, $(SRC_CPP:src/%.cpp=%.o))
+
+LIBS =	-lScePower_stub -lSceSysmodule_stub
 
 
 all: package
