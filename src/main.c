@@ -67,11 +67,12 @@ int main(int argc, char *argv[])
 	printf("\x1b[31m*\x1b[0m MAC Address: %s\n\n", getMacAddress());
 	
 	printf("\x1b[34m*\x1b[0m Battery Status: %s\n", batteryStatus());
-	printf("\x1b[34m*\x1b[0m Battery Percentage: %s\n\n", displayBatteryPercentage);
+	printf("\x1b[34m*\x1b[0m Battery Percentage: %s\n\n", displayBatteryPercentage());
 	
-	sceScreenshotEnable();
+	//sceScreenshotEnable();
 	
 	sceKernelExitProcess(0);
-	sceScreenshotDisable();
+	
+	//sceScreenshotDisable();
 	return 0;
 }
