@@ -40,7 +40,7 @@ const char * getLang()
         return languages[18];
 }
 
-int getClockFreqeuncy(int type)
+int getClockFrequency(int type)
 {
 	if (type == 0)
 		return scePowerGetArmClockFrequency();
@@ -99,9 +99,9 @@ int main(int argc, char *argv[])
 	printf("\x1b[31m*\x1b[0m Language: %s\n", getLang());
 	printf("\x1b[31m*\x1b[0m MAC Address: %s\n\n", getMacAddress());
 	
-	printf("\x1b[33m*\x1b[0m ARM Clock Frequency: %d MHz\n", getClockFreqeuncy(0));
-	printf("\x1b[33m*\x1b[0m BUS Clock Frequency: %d MHz\n", getClockFreqeuncy(1));
-	printf("\x1b[33m*\x1b[0m GPU Clock Frequency: %d MHz\n\n", getClockFreqeuncy(2));
+	printf("\x1b[33m*\x1b[0m ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
+	printf("\x1b[33m*\x1b[0m BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
+	printf("\x1b[33m*\x1b[0m GPU Clock Frequency: %d MHz\n\n", getClockFrequency(2));
 		
 	printf("\x1b[34m*\x1b[0m Battery Status: %s\n", batteryStatus());
 	printf("\x1b[34m*\x1b[0m Battery Percentage: %s\n\n", displayBatteryPercentage());
