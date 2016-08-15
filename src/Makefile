@@ -13,7 +13,7 @@ ASFLAGS = $(CFLAGS)
 
 LIBDIR =
 LDFLAGS = 
-LIBS = -lSceKernel_stub -lScePower_stub
+LIBS = -lSceKernel_stub -lScePower_stub -lSceAppUtil_stub 
 
 eboot.bin: $(TARGET).velf
 	vita-make-fself $< $@
