@@ -8,6 +8,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "graphics.h"
+
+#define printf psvDebugScreenPrintf
+
 const char * getLang()
 {
     const char *languages[] = 
@@ -83,11 +87,13 @@ char * displayBatteryPercentage()
 	return "";
 }*/
 
-static SceNetEtherAddr mac;
-
 char * getMacAddress()
 {
+	static SceNetEtherAddr mac;
+	
     static char macAddress[32];
+	
+	sceNetGetMacAddress(&mac, 0);
 	
 	sprintf(macAddress, "%02X:%02X:%02X:%02X:%02X:%02X", mac.data[0], mac.data[1], mac.data[2], mac.data[3], mac.data[4], mac.data[5]);
 
@@ -99,17 +105,19 @@ int main(int argc, char *argv[])
 	SceCtrlData pad;
 	memset(&pad, 0, sizeof(pad));
 	
-	printf("\x1b[32mVITAident 0.1\x1b[0m\n");
+	psvDebugScreenInit();
 	
-	printf("\x1b[31m*\x1b[0m Language: %s\n", getLang());
-	printf("\x1b[31m*\x1b[0m MAC Address: %s\n\n", getMacAddress());
+	printf("VITAident 0.1\n");
 	
-	printf("\x1b[33m*\x1b[0m ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
-	printf("\x1b[33m*\x1b[0m BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
-	printf("\x1b[33m*\x1b[0m GPU Clock Frequency: %d MHz\n\n", getClockFrequency(2));
+	printf("* Language: %s\n", getLang());
+	printf("* MAC Address: %s\n\n", getMacAddress());
+	
+	printf("* ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
+	printf("* BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
+	printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(2));
 		
-	printf("\x1b[34m*\x1b[0m Battery Status: %s\n", batteryStatus());
-	printf("\x1b[34m*\x1b[0m Battery Percentage: %s\n\n", displayBatteryPercentage());
+	printf("* Battery Status: %s\n", batteryStatus());
+	printf("* Battery Percentage: %s\n\n", displayBatteryPercentage());
 	
 	while (1) 
 	{

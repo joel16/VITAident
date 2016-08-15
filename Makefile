@@ -11,7 +11,7 @@ PROJECT_TITLEID := VID000016
 PROJECT := VITAident
 CXXFLAGS += -std=c++11
 
-LIBS := -lSceDisplay_stub -lSceKernel_stub -lScePower_stub -lSceAppUtil_stub -lSceCtrl_stub 
+LIBS := -lSceDisplay_stub -lSceNet_stub -lSceKernel_stub -lScePower_stub -lSceAppUtil_stub -lSceCtrl_stub 
 
 SRC_C :=$(call rwildcard, src/, *.c)
 SRC_CPP :=$(call rwildcard, src/, *.cpp)
