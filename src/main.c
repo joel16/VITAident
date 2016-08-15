@@ -1,10 +1,12 @@
 #include <psp2/apputil.h>
+#include <psp2/ctrl.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/net/net.h>
 #include <psp2/power.h>
 #include <psp2/screenshot.h>
 #include <psp2/system_param.h>
 #include <stdio.h>
+#include <string.h>
 
 const char * getLang()
 {
@@ -94,6 +96,9 @@ char * getMacAddress()
 
 int main(int argc, char *argv[]) 
 {
+	SceCtrlData pad;
+	memset(&pad, 0, sizeof(pad));
+	
 	printf("\x1b[32mVITAident 0.1\x1b[0m\n");
 	
 	printf("\x1b[31m*\x1b[0m Language: %s\n", getLang());
@@ -105,6 +110,14 @@ int main(int argc, char *argv[])
 		
 	printf("\x1b[34m*\x1b[0m Battery Status: %s\n", batteryStatus());
 	printf("\x1b[34m*\x1b[0m Battery Percentage: %s\n\n", displayBatteryPercentage());
+	
+	while (1) 
+	{
+		sceCtrlPeekBufferPositive(0, &pad, 1);
+	
+		if (pad.buttons & SCE_CTRL_START)
+			break;
+	}
 	
 	//sceScreenshotEnable();
 	
