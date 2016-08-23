@@ -43,6 +43,23 @@ static Color* getVramDisplayBuffer()
 	return vram;
 }
 
+void *psvDebugScreenGetVram() {
+	return g_vram_base;
+}
+
+int psvDebugScreenGetX() {
+	return gX;
+}
+
+int psvDebugScreenGetY() {
+	return gY;
+}
+
+void psvDebugScreenSetXY(int x, int y) {
+	gX = x;
+	gY = y;
+}
+
  // #define LOG(args...)  		vita_logf (__FILE__, __LINE__, args)  ///< Write a log entry
 
 int g_log_mutex;
@@ -51,11 +68,7 @@ void psvDebugScreenInit() {
 	g_log_mutex = sceKernelCreateMutex("log_mutex", 0, 0, NULL);
 
 	SceKernelAllocMemBlockOpt opt = { 0 };
-	#ifdef VITASDK
-	opt.size = 4 * 5;
-	#else
 	opt.size = sizeof(opt);
-	#endif
 	opt.attr = 0x00000004;
 	opt.alignment = FRAMEBUFFER_ALIGNMENT;
 	SceUID displayblock = sceKernelAllocMemBlock("display", SCE_KERNEL_MEMBLOCK_TYPE_USER_CDRAM_RW, FRAMEBUFFER_SIZE, &opt);
@@ -74,7 +87,7 @@ void psvDebugScreenInit() {
 
 	g_vram_base = base;
 
-	int ret = sceDisplaySetFrameBuf(&framebuf, SCE_DISPLAY_UPDATETIMING_NEXTVSYNC);
+	sceDisplaySetFrameBuf(&framebuf, SCE_DISPLAY_UPDATETIMING_NEXTVSYNC);
 
 	g_fg_color = 0xFFFFFFFF;
 	g_bg_color = 0x00000000;
@@ -99,18 +112,18 @@ static void printTextScreen(const char * text)
 	Color *vram;
 
 	for (c = 0; c < strlen(text); c++) {
-		if (gX + 8 > SCREEN_WIDTH) {
-			gY += 8;
+		if (gX + 16 > SCREEN_WIDTH) {
+			gY += 16;
 			gX = 0;
 		}
-		if (gY + 8 > SCREEN_HEIGHT) {
+		if (gY + 16 > SCREEN_HEIGHT) {
 			gY = 0;
 			psvDebugScreenClear(g_bg_color);
 		}
 		char ch = text[c];
 		if (ch == '\n') {
 			gX = 0;
-			gY += 8;
+			gY += 16;
 			continue;
 		} else if (ch == '\r') {
 			gX = 0;
@@ -123,18 +136,27 @@ static void printTextScreen(const char * text)
 		for (i = l = 0; i < 8; i++, l += 8, font++) {
 			vram_ptr  = vram;
 			for (j = 0; j < 8; j++) {
-				if ((*font & (128 >> j))) *vram_ptr = g_fg_color;
-				else *vram_ptr = g_bg_color;
-				vram_ptr++;
+				if ((*font & (128 >> j))) {
+					*(uint32_t *)(vram_ptr) = g_fg_color;
+					*(uint32_t *)(vram_ptr + 1) = g_fg_color;
+					*(uint32_t *)(vram_ptr + LINE_SIZE) = g_fg_color;
+					*(uint32_t *)(vram_ptr + LINE_SIZE + 1) = g_fg_color;
+				} else {
+					*(uint32_t *)(vram_ptr) = g_bg_color;
+					*(uint32_t *)(vram_ptr + 1) = g_bg_color;
+					*(uint32_t *)(vram_ptr + LINE_SIZE) = g_bg_color;
+					*(uint32_t *)(vram_ptr + LINE_SIZE + 1) = g_bg_color;
+				}
+				vram_ptr += 2;
 			}
-			vram += LINE_SIZE;
+			vram += 2 * LINE_SIZE;
 		}
-		gX += 8;
+		gX += 16;
 	}
 }
 
 void psvDebugScreenPrintf(const char *format, ...) {
-	char buf[512];
+	char buf[1024];
 
 	sceKernelLockMutex(g_log_mutex, 1, NULL);
 

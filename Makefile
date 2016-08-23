@@ -11,7 +11,7 @@ PROJECT_TITLEID := VID000016
 PROJECT := VITAident
 CXXFLAGS += -std=c++11
 
-LIBS := -lSceDisplay_stub -lSceNet_stub -lSceKernel_stub -lScePower_stub -lSceAppUtil_stub -lSceCtrl_stub 
+LIBS := -lSceKernel_stub -lSceVshBridge_stub -lSceDisplay_stub -lSceNet_stub -lScePower_stub -lSceAppUtil_stub -lSceCtrl_stub 
 
 SRC_C :=$(call rwildcard, src/, *.c)
 SRC_CPP :=$(call rwildcard, src/, *.cpp)
@@ -47,8 +47,11 @@ $(PROJECT).elf: $(OBJS)
 $(OBJ_DIRS):
 	mkdir -p $@
 
+out/%.o : src/%.cpp | $(OBJ_DIRS)
+	arm-vita-eabi-g++ -c $(CXXFLAGS) -o $@ $<
+
 out/%.o : src/%.c | $(OBJ_DIRS)
-	arm-vita-eabi-g++ -c -o $@ $<
+	arm-vita-eabi-g++ -c $(CFLAGS) -o $@ $<
 
 clean:
 	rm -f $(PROJECT).velf $(PROJECT).elf $(PROJECT).vpk param.sfo eboot.bin $(OBJS)

@@ -1,5 +1,7 @@
 #include <psp2/apputil.h>
 #include <psp2/ctrl.h>
+#include <psp2/display.h>
+#include <psp2/io/fcntl.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/net/net.h>
 #include <psp2/power.h>
@@ -80,12 +82,16 @@ char * displayBatteryPercentage()
 	return percentage;
 }
 
-/*char * GetBatteryRemainCapacity()
+char * GetBatteryRemainCapacity()
 {
-	int batttery = scePowerGetBatteryRemainCapacity();
+	static char capacity[10];
 	
-	return "";
-}*/
+	int battery = scePowerGetBatteryRemainCapacity();
+	
+	sprintf(capacity, "%d", battery);
+	
+	return capacity;
+}
 
 char * getMacAddress()
 {
@@ -98,6 +104,25 @@ char * getMacAddress()
 	sprintf(macAddress, "%02X:%02X:%02X:%02X:%02X:%02X", mac.data[0], mac.data[1], mac.data[2], mac.data[3], mac.data[4], mac.data[5]);
 
     return macAddress;
+}
+
+int _vshSblAimgrGetConsoleId(char CID[32]);
+
+char * getCID() //Thanks tomtomdu80
+{	
+	int i;
+	char CID[32];
+	static char output[32];
+	
+	// Get IDPS
+	_vshSblAimgrGetConsoleId(CID);
+	
+	for (i = 0; i < 32; i++) 
+	{
+		sprintf(output, "%02X", CID[i]);
+	}
+	
+	return output;
 }
 
 int main(int argc, char *argv[]) 
@@ -117,7 +142,10 @@ int main(int argc, char *argv[])
 	printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(2));
 		
 	printf("* Battery Status: %s\n", batteryStatus());
-	printf("* Battery Percentage: %s\n\n", displayBatteryPercentage());
+	printf("* Battery Percentage: %s\n", displayBatteryPercentage());
+	printf("* Battery Reamaing Capacity: %s\n\n", GetBatteryRemainCapacity());
+	
+	printf("* PS Vita CID: %s\n\n", getCID());
 	
 	while (1) 
 	{
