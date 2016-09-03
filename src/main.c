@@ -144,6 +144,8 @@ int main(int argc, char *argv[])
 	printf("* Battery Status: %s\n", batteryStatus());
 	printf("* Battery Percentage: %s\n", displayBatteryPercentage());
 	printf("* Battery Reamaing Capacity: %s\n\n", GetBatteryRemainCapacity());
+	batteryLifeTime = scePowerGetBatteryLifeTime();
+	printf("* Battery life time: (%02dh%02dm)\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
 	
 	printf("* PS Vita CID: %s\n\n", getCID());
 	
