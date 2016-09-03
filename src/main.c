@@ -3,6 +3,7 @@
 #include <psp2/display.h>
 #include <psp2/io/fcntl.h>
 #include <psp2/kernel/processmgr.h>
+#include <psp2/kernel/sysmem.h>
 #include <psp2/net/net.h>
 #include <psp2/power.h>
 #include <psp2/screenshot.h>
@@ -128,27 +129,23 @@ char * getMacAddress()
     return macAddress;
 }
 
-int _vshSblAimgrGetConsoleId(char CID[32]);
+typedef struct {
+	SceUInt size;
+	SceChar8 version_string[28];
+	SceUInt version_value;
+	SceUInt unk;
+} SceSystemSwVersionParam;
 
-char * getCID() //Thanks tomtomdu80
-{	
-	int i;
-	char CID[32];
-	static char output[32];
-	
-	// Get IDPS
-	_vshSblAimgrGetConsoleId(CID);
-	
+int sceKernelGetSystemSwVersion(SceSystemSwVersionParam *param);
 
-	sprintf(output, 
-		"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", 
-		CID[0], CID[1], CID[2], CID[3], CID[4], CID[5], CID[6], CID[7], CID[8], CID[9], CID[10], CID[11], CID[12], CID[13], CID[14], CID[15],
-		CID[16], CID[17], CID[18], CID[19], CID[20], CID[21], CID[22], CID[23], CID[24], CID[25], CID[26], CID[27], CID[28], CID[29], CID[30], 
-		CID[31]
-	);
-	
-	return output;
+void printStarWithColor(Color color)
+{
+	psvDebugScreenSetFgColor(color);
+	printf("* ");
+	psvDebugScreenSetFgColor(COLOR_WHITE);
 }
+
+int _vshSblAimgrGetConsoleId(char CID[32]);
 
 int main(int argc, char *argv[]) 
 {
@@ -157,24 +154,41 @@ int main(int argc, char *argv[])
 	
 	psvDebugScreenInit();
 	
-	printf("VITAident 0.1\n");
+	psvDebugScreenSetFgColor(COLOR_GREEN);
+	printf("VITAident 0.1\n\n");
 	
-	printf("* Language: %s\n", getLang());
-	//printf("* MAC Address: %s\n\n", getMacAddress());
+	SceSystemSwVersionParam param;
+	param.size = sizeof(SceSystemSwVersionParam);
+	sceKernelGetSystemSwVersion(&param);
+	printStarWithColor(COLOR_RED); printf("Firmware version: %.4s\n", param.version_string);
+	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X\n", sceKernelGetModelForCDialog());
+	printStarWithColor(COLOR_RED); printf("Language: %s\n", getLang());
+	//printStarWithColor(COLOR_RED); printf("MAC Address: %s\n\n", getMacAddress());
+	printStarWithColor(COLOR_RED); printf("ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
+	printStarWithColor(COLOR_RED); printf("BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
+	printStarWithColor(COLOR_RED); printf("GPU Clock Frequency: %d MHz\n", getClockFrequency(2));
+	//printStarWithColor(COLOR_RED); printf("GPU Clock Frequency: %d MHz\n\n", getClockFrequency(3));
+
+	char CID[32];
+	char idps[2 * 16] = {0};
 	
-	printf("* ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
-	printf("* BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
-	printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(2));
-	//printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(3));
-		
-	printf("* Battery Percentage: %s\n", displayBatteryPercentage());
-	printf("* Battery Reamaing Capacity: %s\n", GetBatteryRemainCapacity());
+	// Get IDPS
+	_vshSblAimgrGetConsoleId(CID);
+	
+    for (int i = 0; i < 16; i++)
+		snprintf(idps + (i * 2), (2 * 16) - (i * 2) + 1, "%02X", CID[i]);
+	
+	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n\n", idps);
+	
+	printStarWithColor(COLOR_YELLOW); printf("Battery Percentage: %s\n", displayBatteryPercentage());
+	printStarWithColor(COLOR_YELLOW); printf("Battery Reamaing Capacity: %s\n", GetBatteryRemainCapacity());
 	int batteryLifeTime = scePowerGetBatteryLifeTime();
-	printf("* Battery life time: (%02dh%02dm)\n\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
-	//printf("* Battery Percentage: %s\n", scePowerGetBatteryTemp());
-	//printf("* Battery Percentage: %s\n", scePowerGetBatteryVolt());
+	printStarWithColor(COLOR_YELLOW); printf("Battery life time: %02dh %02dm\n\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
+	//printStarWithColor(COLOR_YELLOW); printf("Battery Percentage: %s\n", scePowerGetBatteryTemp());
+	//printStarWithColor(COLOR_YELLOW); printf("Battery Percentage: %s\n", scePowerGetBatteryVolt());
 	
-	printf("* PS Vita CID: %s\n\n", getCID());
+	psvDebugScreenSetFgColor(COLOR_GREEN);
+	printf("> Press start to exit =)");
 	
 	while (1) 
 	{
