@@ -56,6 +56,8 @@ int getClockFrequency(int type)
 		return scePowerGetBusClockFrequency();
 	else if (type == 2)
 		return scePowerGetGpuClockFrequency();
+	else if (type == 3)
+		return scePowerGetGpuXbarClockFrequency();
 	
 	else 
 		return 0;
@@ -140,12 +142,14 @@ int main(int argc, char *argv[])
 	printf("* ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
 	printf("* BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
 	printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(2));
+	printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(3));
 		
-	printf("* Battery Status: %s\n", batteryStatus());
 	printf("* Battery Percentage: %s\n", displayBatteryPercentage());
-	printf("* Battery Reamaing Capacity: %s\n\n", GetBatteryRemainCapacity());
-	batteryLifeTime = scePowerGetBatteryLifeTime();
+	printf("* Battery Reamaing Capacity: %s\n", GetBatteryRemainCapacity());
+	int batteryLifeTime = scePowerGetBatteryLifeTime();
 	printf("* Battery life time: (%02dh%02dm)\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
+	printf("* Battery Percentage: %s\n", scePowerGetBatteryTemp());
+	printf("* Battery Percentage: %s\n", scePowerGetBatteryVolt());
 	
 	printf("* PS Vita CID: %s\n\n", getCID());
 	
