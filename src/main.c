@@ -16,6 +16,12 @@
 
 const char * getLang()
 {
+	SceAppUtilInitParam init;
+	SceAppUtilBootParam boot;
+	memset(&init, 0, sizeof(SceAppUtilInitParam));
+	memset(&boot, 0, sizeof(SceAppUtilBootParam));
+	sceAppUtilInit(&init, &boot);
+	
     const char *languages[] = 
 	{
         "Japanese",
@@ -46,6 +52,8 @@ const char * getLang()
         return languages[language];
     else
         return languages[18];
+	
+	sceAppUtilShutdown();
 }
 
 int getClockFrequency(int type)
@@ -56,8 +64,8 @@ int getClockFrequency(int type)
 		return scePowerGetBusClockFrequency();
 	else if (type == 2)
 		return scePowerGetGpuClockFrequency();
-	else if (type == 3)
-		return scePowerGetGpuXbarClockFrequency();
+	/*else if (type == 3)
+		return scePowerGetGpuXbarClockFrequency();*/
 	
 	else 
 		return 0;
@@ -97,6 +105,15 @@ char * GetBatteryRemainCapacity()
 
 char * getMacAddress()
 {
+	SceNetInitParam info;
+	static char memory[16 * 1024];
+
+	info.memory = memory;
+	info.size = sizeof(memory);
+	info.flags = 0;
+
+	int netInit = sceNetInit(&info);
+	
 	static SceNetEtherAddr mac;
 	
     static char macAddress[32];
@@ -104,6 +121,9 @@ char * getMacAddress()
 	sceNetGetMacAddress(&mac, 0);
 	
 	sprintf(macAddress, "%02X:%02X:%02X:%02X:%02X:%02X", mac.data[0], mac.data[1], mac.data[2], mac.data[3], mac.data[4], mac.data[5]);
+	
+	if (netInit >= 0)
+		sceNetTerm();
 
     return macAddress;
 }
@@ -119,10 +139,13 @@ char * getCID() //Thanks tomtomdu80
 	// Get IDPS
 	_vshSblAimgrGetConsoleId(CID);
 	
-	for (i = 0; i < 32; i++) 
-	{
-		sprintf(output, "%02X", CID[i]);
-	}
+
+	sprintf(output, 
+		"%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", 
+		CID[0], CID[1], CID[2], CID[3], CID[4], CID[5], CID[6], CID[7], CID[8], CID[9], CID[10], CID[11], CID[12], CID[13], CID[14], CID[15],
+		CID[16], CID[17], CID[18], CID[19], CID[20], CID[21], CID[22], CID[23], CID[24], CID[25], CID[26], CID[27], CID[28], CID[29], CID[30], 
+		CID[31]
+	);
 	
 	return output;
 }
@@ -137,19 +160,19 @@ int main(int argc, char *argv[])
 	printf("VITAident 0.1\n");
 	
 	printf("* Language: %s\n", getLang());
-	printf("* MAC Address: %s\n\n", getMacAddress());
+	//printf("* MAC Address: %s\n\n", getMacAddress());
 	
 	printf("* ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
 	printf("* BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
 	printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(2));
-	printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(3));
+	//printf("* GPU Clock Frequency: %d MHz\n\n", getClockFrequency(3));
 		
 	printf("* Battery Percentage: %s\n", displayBatteryPercentage());
 	printf("* Battery Reamaing Capacity: %s\n", GetBatteryRemainCapacity());
 	int batteryLifeTime = scePowerGetBatteryLifeTime();
-	printf("* Battery life time: (%02dh%02dm)\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
-	printf("* Battery Percentage: %s\n", scePowerGetBatteryTemp());
-	printf("* Battery Percentage: %s\n", scePowerGetBatteryVolt());
+	printf("* Battery life time: (%02dh%02dm)\n\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
+	//printf("* Battery Percentage: %s\n", scePowerGetBatteryTemp());
+	//printf("* Battery Percentage: %s\n", scePowerGetBatteryVolt());
 	
 	printf("* PS Vita CID: %s\n\n", getCID());
 	
