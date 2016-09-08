@@ -181,11 +181,11 @@ int main(int argc, char *argv[])
 	printStarWithColor(COLOR_GOLD); printf("GPU Clock Frequency: %d MHz\n\n", getClockFrequency(3));
 	
 	printStarWithColor(COLOR_BLUE); printf("Battery Percentage: %s\n", displayBatteryPercentage());
-	printStarWithColor(COLOR_BLUE); printf("Battery Reamaing Capacity: %s\n", GetBatteryRemainCapacity());
+	printStarWithColor(COLOR_BLUE); printf("Battery Remaining Capacity: %s\n", GetBatteryRemainCapacity());
 	int batteryLifeTime = scePowerGetBatteryLifeTime();
 	printStarWithColor(COLOR_BLUE); printf("Battery life time: %02dh %02dm\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
 	printStarWithColor(COLOR_BLUE); printf("Battery Temperature: %s C (%s F)\n", getBatteryTemp(0), getBatteryTemp(1));
-	printStarWithColor(COLOR_BLUE); printf("Battery Percentage: %s V\n\n", getBatteryVoltage());
+	printStarWithColor(COLOR_BLUE); printf("Battery Voltage: %s V\n\n", getBatteryVoltage());
 	
 	uint64_t free_size = 0, max_size = 0;
 	sceAppMgrGetDevInfo("ux0:", &max_size, &free_size);
