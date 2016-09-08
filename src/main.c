@@ -139,13 +139,6 @@ char * getMacAddress()
     return macAddress;
 }
 
-void printStarWithColor(Color color)
-{
-	psvDebugScreenSetFgColor(color);
-	printf("* ");
-	psvDebugScreenSetFgColor(COLOR_WHITE);
-}
-
 int main(int argc, char *argv[]) 
 {
 	SceCtrlData pad;
@@ -154,7 +147,7 @@ int main(int argc, char *argv[])
 	psvDebugScreenInit();
 	
 	psvDebugScreenSetFgColor(COLOR_GREEN);
-	printf("VITAident 0.1\n\n");
+	printf("VITAident 0.2\n\n");
 	
 	SceSystemSwVersionParam param;
 	param.size = sizeof(SceSystemSwVersionParam);
@@ -173,7 +166,11 @@ int main(int argc, char *argv[])
     for (i = 0; i < 16; i++)
 		snprintf(idps + (i * 2), (2 * 16) - (i * 2) + 1, "%02X", CID[i]);
 	
-	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n\n", idps);
+	SceKernelOpenPsId id;
+	sceKernelGetOpenPsId(&id);
+	
+	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n", idps); //Thanks Major_Tom
+	printStarWithColor(COLOR_RED); printf("PSID: %02X\n\n", id); //Thanks SMOKE
 	
 	printStarWithColor(COLOR_GOLD); printf("ARM clock frequency: %d MHz\n", getClockFrequency(0));
 	printStarWithColor(COLOR_GOLD); printf("BUS clock frequency: %d MHz\n", getClockFrequency(1));

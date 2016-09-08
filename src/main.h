@@ -5,14 +5,13 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/sysmem.h>
+#include <psp2/kernel/openpsid.h>
 #include <psp2/net/net.h>
 #include <psp2/power.h>
 #include <psp2/screenshot.h>
 #include <psp2/system_param.h>
 #include <stdio.h>
 #include <string.h>
-
-#define printf psvDebugScreenPrintf
 
 typedef struct {
 	SceUInt size;

@@ -1,5 +1,12 @@
 #include "utils.h"
 
+void printStarWithColor(Color color)
+{
+	psvDebugScreenSetFgColor(color);
+	printf("* ");
+	psvDebugScreenSetFgColor(COLOR_WHITE);
+}
+
 void getSizeString(char *string, uint64_t size) //Thanks TheOfficialFloW
 {
 	double double_size = (double)size;
