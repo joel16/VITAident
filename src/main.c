@@ -175,17 +175,17 @@ int main(int argc, char *argv[])
 	
 	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n\n", idps);
 	
-	printStarWithColor(COLOR_GOLD); printf("ARM Clock Frequency: %d MHz\n", getClockFrequency(0));
-	printStarWithColor(COLOR_GOLD); printf("BUS Clock Frequency: %d MHz\n", getClockFrequency(1));
-	printStarWithColor(COLOR_GOLD); printf("GPU Clock Frequency: %d MHz\n", getClockFrequency(2));
-	printStarWithColor(COLOR_GOLD); printf("GPU Clock Frequency: %d MHz\n\n", getClockFrequency(3));
+	printStarWithColor(COLOR_GOLD); printf("ARM clock frequency: %d MHz\n", getClockFrequency(0));
+	printStarWithColor(COLOR_GOLD); printf("BUS clock frequency: %d MHz\n", getClockFrequency(1));
+	printStarWithColor(COLOR_GOLD); printf("GPU clock frequency: %d MHz\n", getClockFrequency(2));
+	printStarWithColor(COLOR_GOLD); printf("GPU clock frequency: %d MHz\n\n", getClockFrequency(3));
 	
-	printStarWithColor(COLOR_BLUE); printf("Battery Percentage: %s\n", displayBatteryPercentage());
-	printStarWithColor(COLOR_BLUE); printf("Battery Remaining Capacity: %s\n", GetBatteryRemainCapacity());
+	printStarWithColor(COLOR_BLUE); printf("Battery percentage: %s\n", displayBatteryPercentage());
+	printStarWithColor(COLOR_BLUE); printf("Battery remaining Capacity: %s\n", GetBatteryRemainCapacity());
 	int batteryLifeTime = scePowerGetBatteryLifeTime();
 	printStarWithColor(COLOR_BLUE); printf("Battery life time: %02dh %02dm\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
-	printStarWithColor(COLOR_BLUE); printf("Battery Temperature: %s C (%s F)\n", getBatteryTemp(0), getBatteryTemp(1));
-	printStarWithColor(COLOR_BLUE); printf("Battery Voltage: %s V\n\n", getBatteryVoltage());
+	printStarWithColor(COLOR_BLUE); printf("Battery temperature: %s C (%s F)\n", getBatteryTemp(0), getBatteryTemp(1));
+	printStarWithColor(COLOR_BLUE); printf("Battery voltage: %s V\n\n", getBatteryVoltage());
 	
 	uint64_t free_size = 0, max_size = 0;
 	sceAppMgrGetDevInfo("ux0:", &max_size, &free_size);
@@ -194,8 +194,8 @@ int main(int argc, char *argv[])
 	getSizeString(free_size_string, free_size);
 	getSizeString(max_size_string, max_size);
 	
-	printStarWithColor(COLOR_GREEN); printf("Memory Card Size: %s\n", max_size_string);
-	printStarWithColor(COLOR_GREEN); printf("Memory Card Free: %s\n", free_size_string);
+	printStarWithColor(COLOR_GREEN); printf("Memory card size: %s\n", max_size_string);
+	printStarWithColor(COLOR_GREEN); printf("Memory card free: %s\n", free_size_string);
 	
 	psvDebugScreenSetFgColor(COLOR_GREEN);
 	printf("\n> Press start to exit =)");
