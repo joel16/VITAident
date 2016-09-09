@@ -9,12 +9,12 @@ CFLAGS   = -Wl,-q -Wall -O3
 CXXFLAGS = $(CFLAGS) -std=c++11 -fno-rtti -fno-exceptions
 ASFLAGS  = $(CFLAGS)
 
-OBJS = font.o graphics.o main.o utils.o \
+OBJS = app.o font.o fs.o graphics.o kernel.o main.o net.o power.o screenshot.o utils.o \
 
 LIBDIR = libs
 LDFLAGS = 
 LIBS := -lSceAppMgr_stub -lSceAppUtil_stub -lSceCtrl_stub -lSceDisplay_stub -lSceKernel_stub \
-		-lSceNet_stub -lScePower_stub -lSceVshBridge_stub
+		-lSceNet_stub -lSceNetCtl_stub -lScePower_stub -lSceSysmodule_stub -lSceVshBridge_stub
 
 all: $(TARGET).vpk
 
