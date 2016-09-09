@@ -5,7 +5,7 @@ SOURCES := src
 PREFIX   = arm-vita-eabi
 CC       = $(PREFIX)-gcc
 CXX      = $(PREFIX)-g++
-CFLAGS   = -Wl,-q -Wall -O3
+CFLAGS   = -Wl,-q -Wall -Werror -O3
 CXXFLAGS = $(CFLAGS) -std=c++11 -fno-rtti -fno-exceptions
 ASFLAGS  = $(CFLAGS)
 
