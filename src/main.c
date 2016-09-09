@@ -65,7 +65,6 @@ int main(int argc, char *argv[])
 			}
 			
 			captureScreenshot("ux0:/data/VID000016/screenshots/VITAident.bmp");
-			sceKernelDelayThread(1 * 1000 * 1000);
 			break;
 		}
 	}
