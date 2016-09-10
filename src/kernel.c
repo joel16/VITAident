@@ -43,9 +43,9 @@ SceKernelOpenPsId getPSID()
 
 char * getUnit()
 {
-	if ((vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsCEX()))
+	if ((vshSblAimgrIsGenuineVITA() | vshSblAimgrIsGenuineDolce()) && (vshSblAimgrIsCEX()))
 		return "CEX unit";
-	else if ((vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsCEX()) && (vshSysconIsIduMode()))
+	else if ((vshSblAimgrIsGenuineVITA() | vshSblAimgrIsGenuineDolce()) && (vshSblAimgrIsCEX()) && (vshSysconIsIduMode()))
 		return "CEX | IDU unit";
 	else if (vshSblAimgrIsTest())
 		return "Test unit";
@@ -53,4 +53,12 @@ char * getUnit()
 		return "Debug tool";
 	else 
 		return "Unknown";
+}
+
+char * getDeviceType(){
+	if(vshSblAimgrIsGenuineVITA())
+		return "PS Vita";
+	else if(vshSblAimgrIsGenuineDolce())
+		return "PS Vita TV";
+
 }

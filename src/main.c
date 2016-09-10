@@ -25,15 +25,16 @@ int main(int argc, char *argv[])
 	printStarWithColor(COLOR_RED); printf("Language: %s\n", getLang());
 	printStarWithColor(COLOR_RED); printf("MAC address: %s\n", getMacAddress());
 	printStarWithColor(COLOR_RED); printf("IP address: %s\n", getIP());
+	printStarWithColor(COLOR_RED); printf("PS Vita Type: %s", getDeviceType());
 	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n", getCID()); //Thanks Major_Tom
 	printStarWithColor(COLOR_RED); printf("PSID: %02X\n", getPSID()); //Thanks SMOKE
 	
 	printStarWithColor(COLOR_RED); printf("PS Vita unit: %s\n\n", getUnit());
 	
-	printStarWithColor(COLOR_GOLD); printf("ARM clock frequency: %d MHz\n", getClockFrequency(0));
-	printStarWithColor(COLOR_GOLD); printf("BUS clock frequency: %d MHz\n", getClockFrequency(1));
-	printStarWithColor(COLOR_GOLD); printf("GPU clock frequency: %d MHz\n", getClockFrequency(2));
-	printStarWithColor(COLOR_GOLD); printf("GPU Xbar clock frequency: %d MHz\n\n", getClockFrequency(3));
+	printStarWithColor(COLOR_GOLD); printf("ARM clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Cpu));
+	printStarWithColor(COLOR_GOLD); printf("BUS clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Bus));
+	printStarWithColor(COLOR_GOLD); printf("GPU clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Gpu));
+	printStarWithColor(COLOR_GOLD); printf("GPU Xbar clock frequency: %d MHz\n\n", getClockFrequency(ClockFrequencyType_GpuXbar));
 	
 	printStarWithColor(COLOR_BLUE); printf("Battery percentage: %s\n", displayBatteryPercentage());
 	printStarWithColor(COLOR_BLUE); printf("Battery remaining Capacity: %s\n", GetBatteryRemainCapacity());
