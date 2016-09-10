@@ -21,11 +21,10 @@ int main(int argc, char *argv[])
 	printf("VITAident 0.2\n\n");
 	
 	printStarWithColor(COLOR_RED); printf("Firmware version: %.4s\n", getFwVersion());
-	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X\n", getModel());
+	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X | %s\n", getModel(), getDeviceType());
 	printStarWithColor(COLOR_RED); printf("Language: %s\n", getLang());
 	printStarWithColor(COLOR_RED); printf("MAC address: %s\n", getMacAddress());
 	printStarWithColor(COLOR_RED); printf("IP address: %s\n", getIP());
-	printStarWithColor(COLOR_RED); printf("PS Vita Type: %s", getDeviceType());
 	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n", getCID()); //Thanks Major_Tom
 	printStarWithColor(COLOR_RED); printf("PSID: %02X\n", getPSID()); //Thanks SMOKE
 	

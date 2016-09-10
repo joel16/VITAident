@@ -20,5 +20,5 @@
 - Automatically saves screenshot upon exit.
 
 
-Credits: 
-Major_Tom, Smoke, TheOfficialFloW and Rinnegatamante.
+# Credits: 
+Major_Tom, Smoke, TheOfficialFloW, Rinnegatamante and himanshugoel2797.

@@ -55,10 +55,12 @@ char * getUnit()
 		return "Unknown";
 }
 
-char * getDeviceType(){
+char * getDeviceType()
+{
 	if(vshSblAimgrIsGenuineVITA())
 		return "PS Vita";
 	else if(vshSblAimgrIsGenuineDolce())
 		return "PS Vita TV";
-
+	else
+		return "Uknown";
 }
