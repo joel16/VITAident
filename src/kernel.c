@@ -35,9 +35,22 @@ char * getCID()
 
 SceKernelOpenPsId getPSID()
 {
-	
 	SceKernelOpenPsId id;
 	sceKernelGetOpenPsId(&id);
 	
 	return id;
+}
+
+char * getUnit()
+{
+	if ((vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsCEX()))
+		return "CEX unit";
+	else if ((vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsCEX()) && (vshSysconIsIduMode()))
+		return "CEX | IDU unit";
+	else if (vshSblAimgrIsTest())
+		return "Test unit";
+	else if (vshSblAimgrIsTool())
+		return "Debug tool";
+	else 
+		return "Unknown";
 }

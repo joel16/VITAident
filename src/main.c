@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 	SceCtrlData pad;
 	memset(&pad, 0, sizeof(pad));
 	
+	initAppUtil();
 	initNet();
 	psvDebugScreenInit();
 	
@@ -25,7 +26,9 @@ int main(int argc, char *argv[])
 	printStarWithColor(COLOR_RED); printf("MAC address: %s\n", getMacAddress());
 	printStarWithColor(COLOR_RED); printf("IP address: %s\n", getIP());
 	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n", getCID()); //Thanks Major_Tom
-	printStarWithColor(COLOR_RED); printf("PSID: %02X\n\n", getPSID()); //Thanks SMOKE
+	printStarWithColor(COLOR_RED); printf("PSID: %02X\n", getPSID()); //Thanks SMOKE
+	
+	printStarWithColor(COLOR_RED); printf("PS Vita unit: %s\n\n", getUnit());
 	
 	printStarWithColor(COLOR_GOLD); printf("ARM clock frequency: %d MHz\n", getClockFrequency(0));
 	printStarWithColor(COLOR_GOLD); printf("BUS clock frequency: %d MHz\n", getClockFrequency(1));
@@ -39,6 +42,7 @@ int main(int argc, char *argv[])
 	printStarWithColor(COLOR_BLUE); printf("Battery temperature: %s C (%s F)\n", getBatteryTemp(0), getBatteryTemp(1));
 	printStarWithColor(COLOR_BLUE); printf("Battery voltage: %s V\n\n", getBatteryVoltage());
 	
+	printStarWithColor(COLOR_GREEN); printf("Username: %s\n", getUser());
 	printStarWithColor(COLOR_GREEN); printf("Memory card size: %s\n", getStorageInfo(0));
 	printStarWithColor(COLOR_GREEN); printf("Memory card free: %s\n", getStorageInfo(1));
 	
@@ -70,6 +74,7 @@ int main(int argc, char *argv[])
 	}
 	
 	termNet();
+	termAppUtil();
 	sceKernelExitProcess(0);
 	
 	return 0;

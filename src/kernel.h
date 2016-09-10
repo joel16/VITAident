@@ -15,7 +15,15 @@ int sceKernelGetSystemSwVersion(SceSystemSwVersionParam *param);
 
 int _vshSblAimgrGetConsoleId(char CID[32]);
 
+int vshSblAimgrIsCEX();
+int vshSblAimgrIsDEX();
+int vshSysconIsIduMode();
+int vshSblAimgrIsGenuineVITA();
+int vshSblAimgrIsTest();
+int vshSblAimgrIsTool();
+
 char * getFwVersion();
 int getModel();
 char * getCID();
 SceKernelOpenPsId getPSID();
+char * getUnit();

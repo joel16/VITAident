@@ -1,14 +1,30 @@
 #include "app.h"
 #include "utils.h"
 
-const char * getLang()
+void initAppUtil()
 {
 	SceAppUtilInitParam init;
 	SceAppUtilBootParam boot;
 	memset(&init, 0, sizeof(SceAppUtilInitParam));
 	memset(&boot, 0, sizeof(SceAppUtilBootParam));
 	sceAppUtilInit(&init, &boot);
+}
+
+void termAppUtil()
+{
+	sceAppUtilShutdown();
+}
+
+char * getUser()
+{
+	static SceChar8 userName[SCE_SYSTEM_PARAM_USERNAME_MAXSIZE];
+	sceAppUtilSystemParamGetString(SCE_SYSTEM_PARAM_ID_USERNAME, userName, SCE_SYSTEM_PARAM_USERNAME_MAXSIZE);
 	
+	return (char *)userName;
+}
+
+const char * getLang()
+{
 	const char *languages[] = 
 	{
 		"Japanese",
@@ -39,8 +55,6 @@ const char * getLang()
 		return languages[language];
 	else
 		return languages[18];
-			
-	sceAppUtilShutdown();
 }
 
 char * getStorageInfo(int type)

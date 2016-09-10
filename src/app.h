@@ -5,5 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 
+void initAppUtil();
+void termAppUtil();
+char * getUser();
 const char * getLang();
 char * getStorageInfo(int type);
