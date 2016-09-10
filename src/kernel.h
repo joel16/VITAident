@@ -1,3 +1,6 @@
+#ifndef _VITAIDENT_KERNEL_H_
+#define _VITAIDENT_KERNEL_H_
+
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/sysmem.h>
 #include <psp2/kernel/openpsid.h>
@@ -19,6 +22,7 @@ int vshSblAimgrIsCEX();
 int vshSblAimgrIsDEX();
 int vshSysconIsIduMode();
 int vshSblAimgrIsGenuineVITA();
+int vshSblAimgrIsGenuineDolce();
 int vshSblAimgrIsTest();
 int vshSblAimgrIsTool();
 
@@ -27,3 +31,6 @@ int getModel();
 char * getCID();
 SceKernelOpenPsId getPSID();
 char * getUnit();
+char * getDeviceType();
+
+#endif

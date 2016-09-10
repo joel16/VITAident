@@ -1,14 +1,14 @@
 #include "power.h"
 
-int getClockFrequency(int type)
+int getClockFrequency(ClockFrequencyType type)
 {
-	if (type == 0)
+	if (type == ClockFrequencyType_Cpu)
 		return scePowerGetArmClockFrequency();
-	else if (type == 1)
+	else if (type == ClockFrequencyType_Bus)
 		return scePowerGetBusClockFrequency();
-	else if (type == 2)
+	else if (type == ClockFrequencyType_Gpu)
 		return scePowerGetGpuClockFrequency();
-	else if (type == 3)
+	else if (type == ClockFrequencyType_GpuXbar)
 		return scePowerGetGpuXbarClockFrequency();
 	
 	else 

@@ -1,3 +1,6 @@
+#ifndef _VITAIDENT_APP_H_
+#define _VITAIDENT_APP_H_
+
 #include <psp2/apputil.h>
 #include <psp2/appmgr.h>
 #include <psp2/system_param.h>
@@ -10,3 +13,5 @@ void termAppUtil();
 char * getUser();
 const char * getLang();
 char * getStorageInfo(int type);
+
+#endif
