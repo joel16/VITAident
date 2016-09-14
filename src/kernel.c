@@ -52,7 +52,7 @@ char * getUnit()
 	else if (vshSblAimgrIsTool())
 		return "Debug tool";
 	else 
-		return "Unknown";
+		return "PS Vita TV";
 }
 
 char * getDeviceType()

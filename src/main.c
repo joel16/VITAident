@@ -35,10 +35,17 @@ int main(int argc, char *argv[])
 	printStarWithColor(COLOR_GOLD); printf("GPU clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Gpu));
 	printStarWithColor(COLOR_GOLD); printf("GPU Xbar clock frequency: %d MHz\n\n", getClockFrequency(ClockFrequencyType_GpuXbar));
 	
-	printStarWithColor(COLOR_BLUE); printf("Battery percentage: %s\n", displayBatteryPercentage());
+	if (!(getModel() == 0x00020000)) //if its a PS Vita TV this info is uselsss. Returns 90% all the time, even though it has to be always plugged in.
+		printStarWithColor(COLOR_BLUE); printf("Battery percentage: %s\n", displayBatteryPercentage());
+	
 	printStarWithColor(COLOR_BLUE); printf("Battery remaining Capacity: %s\n", GetBatteryRemainCapacity());
-	int batteryLifeTime = scePowerGetBatteryLifeTime();
-	printStarWithColor(COLOR_BLUE); printf("Battery life time: %02dh %02dm\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
+	
+	if (!(getModel() == 0x00020000)) //if its a PS Vita TV this info is uselsss. Returns 0h 0m
+	{
+		int batteryLifeTime = scePowerGetBatteryLifeTime();
+		printStarWithColor(COLOR_BLUE); printf("Battery life time: %02dh %02dm\n", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
+	}
+	
 	printStarWithColor(COLOR_BLUE); printf("Battery temperature: %s C (%s F)\n", getBatteryTemp(0), getBatteryTemp(1));
 	printStarWithColor(COLOR_BLUE); printf("Battery voltage: %s V\n\n", getBatteryVoltage());
 	
