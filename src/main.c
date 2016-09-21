@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
 	psvDebugScreenInit();
 	
 	psvDebugScreenSetFgColor(COLOR_GREEN);
-	printf("VITAident 0.2\n\n");
+	printf("VITAident 0.3\n\n");
 	
 	printStarWithColor(COLOR_RED); printf("Firmware version: %.4s\n", getFwVersion());
 	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X | %s\n", getModel(), getDeviceType());
