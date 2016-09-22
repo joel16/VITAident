@@ -26,6 +26,8 @@ int vshSblAimgrIsGenuineDolce();
 int vshSblAimgrIsTest();
 int vshSblAimgrIsTool();
 
+int vshRemovableMemoryGetCardInsertState();
+
 char * getFwVersion();
 int getModel();
 char * getCID();
