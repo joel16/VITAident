@@ -46,16 +46,19 @@ int main(int argc, char *argv[])
 	
 	printStarWithColor(COLOR_GREEN); printf("Username: %s\n", getUser());
 	
-	if (vshRemovableMemoryGetCardInsertState())
+	if (vshRemovableMemoryGetCardInsertState() == 1)
 	{
-		printStarWithColor(COLOR_GREEN); printf("Memory card storage: %s\n", getStorageInfo(0));
-		printStarWithColor(COLOR_GREEN); printf("Memory card storage free: %s\n", getStorageInfo(1));	
+		vita2d_pgf_draw_textf(font, 20, 240, RGBA8(11, 199, 41, 255), 1.0f, "Memory card storage: %s\n", getStorageInfo(0));
+		vita2d_pgf_draw_textf(font, 20, 280, RGBA8(11, 199, 41, 255), 1.0f, "Memory card storage free: %s\n", getStorageInfo(1));	
+	}
+	else if (vshRemovableMemoryGetCardInsertState() == 0)
+	{
+		vita2d_pgf_draw_textf(font, 20, 240, RGBA8(11, 199, 41, 255), 1.0f, "Internal storage: %s\n", getStorageInfo(0));
+		vita2d_pgf_draw_textf(font, 20, 280, RGBA8(11, 199, 41, 255), 1.0f, "Internal storage free: %s\n", getStorageInfo(1));
 	}
 	else
-	{
-		printStarWithColor(COLOR_GREEN); printf("Internal storage: %s\n", getStorageInfo(0));
-		printStarWithColor(COLOR_GREEN); printf("Internal storage free: %s\n", getStorageInfo(1));
-	}
+		vita2d_pgf_draw_textf(font, 20, 240, RGBA8(11, 199, 41, 255), 1.0f, "Memory card not inserted."); //Although this is basically impossible on PCH-1000
+
 
 	
 	psvDebugScreenSetFgColor(COLOR_GREEN);
