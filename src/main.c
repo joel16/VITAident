@@ -20,12 +20,13 @@ int main(int argc, char *argv[])
 	psvDebugScreenSetFgColor(COLOR_GREEN);
 	printf("VITAident 0.3\n\n");
 	
-	printStarWithColor(COLOR_RED); printf("Firmware version: %.4s\n", getFwVersion());
+	printStarWithColor(COLOR_RED); printf("Firmware version: %.4s (Henkaku version %c)\n", getFwVersion(), getHenkakuVersion());
 	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X | %s\n", getModel(), getDeviceType());
 	printStarWithColor(COLOR_RED); printf("Language: %s\n", getLang());
 	printStarWithColor(COLOR_RED); printf("MAC address: %s\n", getMacAddress());
 	printStarWithColor(COLOR_RED); printf("IP address: %s\n", getIP());
 	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n", getCID()); //Thanks Major_Tom
+	//printStarWithColor(COLOR_RED); printf("PS Vita MCID: %.8s\n", getmCID()); 
 	printStarWithColor(COLOR_RED); printf("PSID: %02X\n", getPSID()); //Thanks SMOKE
 	printStarWithColor(COLOR_RED); printf("PS Vita unit: %s\n\n", getUnit());
 	
@@ -48,16 +49,16 @@ int main(int argc, char *argv[])
 	
 	if (vshRemovableMemoryGetCardInsertState() == 1)
 	{
-		vita2d_pgf_draw_textf(font, 20, 240, RGBA8(11, 199, 41, 255), 1.0f, "Memory card storage: %s\n", getStorageInfo(0));
-		vita2d_pgf_draw_textf(font, 20, 280, RGBA8(11, 199, 41, 255), 1.0f, "Memory card storage free: %s\n", getStorageInfo(1));	
+		printStarWithColor(COLOR_GREEN); printf("Memory card storage: %s\n", getStorageInfo(0));
+		printStarWithColor(COLOR_GREEN); printf("Memory card storage free: %s\n", getStorageInfo(1));	
 	}
 	else if (vshRemovableMemoryGetCardInsertState() == 0)
 	{
-		vita2d_pgf_draw_textf(font, 20, 240, RGBA8(11, 199, 41, 255), 1.0f, "Internal storage: %s\n", getStorageInfo(0));
-		vita2d_pgf_draw_textf(font, 20, 280, RGBA8(11, 199, 41, 255), 1.0f, "Internal storage free: %s\n", getStorageInfo(1));
+		printStarWithColor(COLOR_GREEN); printf("Internal storage: %s\n", getStorageInfo(0));
+		printStarWithColor(COLOR_GREEN); printf("Internal storage free: %s\n", getStorageInfo(1));
 	}
-	else
-		vita2d_pgf_draw_textf(font, 20, 240, RGBA8(11, 199, 41, 255), 1.0f, "Memory card not inserted."); //Although this is basically impossible on PCH-1000
+	/*else
+		printStarWithColor(COLOR_GREEN); printf("Memory card not inserted."); //Although this is basically impossible on PCH-1000*/
 
 
 	
