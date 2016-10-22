@@ -38,6 +38,6 @@ char * getCID();
 char * getmCID();
 SceKernelOpenPsId getPSID();
 char * getUnit();
-char * getDeviceType();
+const char * getDeviceModel();
 
 #endif

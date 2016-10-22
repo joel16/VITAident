@@ -1,3 +1,4 @@
+#include "fs.h"
 #include "kernel.h"
 
 char * getFwVersion()
@@ -84,10 +85,10 @@ char * getUnit()
 		return "PS Vita TV"; //Because it returns NULL running on a VITA TV
 }
 
-char * getDeviceType()
+const char * getDeviceModel()
 {
 	if(vshSblAimgrIsGenuineVITA())
-		return "PS Vita";
+		return getVitaModel();
 	else if(vshSblAimgrIsGenuineDolce())
 		return "PS Vita TV";
 	else

@@ -18,10 +18,10 @@ int main(int argc, char *argv[])
 	psvDebugScreenInit();
 	
 	psvDebugScreenSetFgColor(COLOR_GREEN);
-	printf("VITAident 0.3\n\n");
+	printf("VITAident 0.4\n\n");
 	
 	printStarWithColor(COLOR_RED); printf("Firmware version: %.4s (Henkaku version %c)\n", getFwVersion(), getHenkakuVersion());
-	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X | %s\n", getModel(), getDeviceType());
+	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X (%s)\n", getModel(), getDeviceModel());
 	printStarWithColor(COLOR_RED); printf("Language: %s\n", getLang());
 	printStarWithColor(COLOR_RED); printf("MAC address: %s\n", getMacAddress());
 	printStarWithColor(COLOR_RED); printf("IP address: %s\n", getIP());
