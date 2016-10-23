@@ -3,20 +3,24 @@
 ![VITAident Banner](http://i.imgur.com/X8f2S3Q.png)
 
 # Features:
+- Displays firmware and model info (Vita fat/slim/TV).
+- Displays PS Vita Unit (cex/dex).
+- Displays Vita motherboard.
+- Displays PS VITA CID (Console ID).
+- Displays PSID.
+- Displays language.
+- Displays IP address.
+- Displays MAC address.
 - Displays ARM, BUS and GPU clock frequency.
+- Displays GPU Xbar clock frequency.
 - Displays battery life time.
 - Displays battery percentage.
 - Displays battery remaining capacity.
-- Displays language.
-- Displays firmware and model info.
-- Displays PS VITA CID (Console ID).
 - Displays battery temperature in both degrees C and F.
 - Displays battery voltage.
-- Displays SD free and total capacity. (Thanks TheOfficialFloW)
-- Displays GPU Xbar clock frequency.
-- Displays IP address.
-- Displays MAC address.
-- Displays PSID.
+- Displays PSN username.
+- Displays SD free and total capacity (Thanks TheOfficialFloW).
+- Displays enter button (Cross/Circle).
 - Automatically saves screenshot upon exit.
 
 
