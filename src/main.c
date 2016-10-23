@@ -22,17 +22,18 @@ int main(int argc, char *argv[])
 	
 	printStarWithColor(COLOR_RED); printf("Firmware version: %.4s (Henkaku version %c)\n", getFwVersion(), getHenkakuVersion());
 	printStarWithColor(COLOR_RED); printf("Model version: 0x%08X (%s)\n", getModel(), getDeviceModel());
-	printStarWithColor(COLOR_RED); printf("Language: %s\n", getLang());
-	printStarWithColor(COLOR_RED); printf("MAC address: %s\n", getMacAddress());
-	printStarWithColor(COLOR_RED); printf("IP address: %s\n", getIP());
+	printStarWithColor(COLOR_RED); printf("PS Vita unit: %s\n", getUnit());
+	printStarWithColor(COLOR_RED); printf("Motherboard: %s\n", getBoard());
 	printStarWithColor(COLOR_RED); printf("PS Vita CID: %s\n", getCID()); //Thanks Major_Tom
 	//printStarWithColor(COLOR_RED); printf("PS Vita MCID: %.8s\n", getmCID()); 
-	printStarWithColor(COLOR_RED); printf("PSID: %02X\n", getPSID()); //Thanks SMOKE
-	printStarWithColor(COLOR_RED); printf("PS Vita unit: %s\n\n", getUnit());
+	printStarWithColor(COLOR_RED); printf("PSID: %02X\n\n", getPSID()); //Thanks SMOKE
 	
+	printStarWithColor(COLOR_GOLD); printf("Language: %s\n", getLang());
+	printStarWithColor(COLOR_GOLD); printf("MAC address: %s\n", getMacAddress());
+	printStarWithColor(COLOR_GOLD); printf("IP address: %s\n", getIP());
 	printStarWithColor(COLOR_GOLD); printf("ARM clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Cpu));
 	printStarWithColor(COLOR_GOLD); printf("BUS clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Bus));
-	printStarWithColor(COLOR_GOLD); printf("GPU clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Gpu));
+	//printStarWithColor(COLOR_GOLD); printf("GPU clock frequency: %d MHz\n", getClockFrequency(ClockFrequencyType_Gpu));
 	printStarWithColor(COLOR_GOLD); printf("GPU Xbar clock frequency: %d MHz\n\n", getClockFrequency(ClockFrequencyType_GpuXbar));
 	
 	if (!(getModel() == 0x00020000))//if its a PS Vita TV this info is uselsss.

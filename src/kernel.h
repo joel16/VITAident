@@ -39,5 +39,6 @@ char * getmCID();
 SceKernelOpenPsId getPSID();
 char * getUnit();
 const char * getDeviceModel();
+const char * getBoard();
 
 #endif

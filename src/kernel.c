@@ -90,7 +90,19 @@ const char * getDeviceModel()
 	if(vshSblAimgrIsGenuineVITA())
 		return getVitaModel();
 	else if(vshSblAimgrIsGenuineDolce())
-		return "PS Vita TV";
+		return "VTE-1000";
+	else
+		return "Uknown";
+}
+
+const char * getBoard()
+{
+	if (strcmp(getVitaModel(), "PCH-2000") == 0)
+		return "USS-1001";
+	else if (strcmp(getVitaModel(), "PCH-1000") == 0)
+		return "IRS-002";
+	else if(vshSblAimgrIsGenuineDolce())
+		return "DOL-1001";
 	else
 		return "Uknown";
 }
