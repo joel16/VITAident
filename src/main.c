@@ -47,6 +47,7 @@ int main(int argc, char *argv[])
 	}
 	
 	printStarWithColor(COLOR_GREEN); printf("Username: %s\n", getUser());
+	printStarWithColor(COLOR_GREEN); printf("Enter button: %s\n", getEnterButton());
 	
 	if (vshRemovableMemoryGetCardInsertState() == 1)
 	{

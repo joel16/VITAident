@@ -13,5 +13,6 @@ void termAppUtil();
 char * getUser();
 const char * getLang();
 char * getStorageInfo(int type);
+const char * getEnterButton();
 
 #endif
