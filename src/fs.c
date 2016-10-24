@@ -29,23 +29,35 @@ int dirExists(const char* path)
 	}
 }
 
-const char * getVitaModel()
-{	
+SceOff getPartitionInfo(int storage, const char * partition)
+{
 	SceOff maxSize = 0;
+	SceOff freeSize = 0;
 
 	SceIoStat stat;
 	memset(&stat, 0, sizeof(SceIoStat));
 	
-	if (sceIoGetstat("ur0:", &stat) >= 0) 
+	if (sceIoGetstat(partition, &stat) >= 0) 
 	{		
 		SceIoDevInfo info;
 		memset(&info, 0, sizeof(SceIoDevInfo));
-		int res = sceIoDevctl("ur0:", 0x3001, 0, 0, &info, sizeof(SceIoDevInfo));
+		int res = sceIoDevctl(partition, 0x3001, 0, 0, &info, sizeof(SceIoDevInfo));
 		if (res >= 0) 
+		{
+			freeSize = info.free_size;
 			maxSize = info.max_size;
-		else 
-			maxSize = 0;
+		}
 	}
+	
+	if (storage == 0)
+		return freeSize;
+	else
+		return maxSize;
+}
+
+const char * getVitaModel()
+{	
+	SceOff maxSize = getPartitionInfo(1, "ur0:");
 	
 	static char string[16];
 	getSizeString(string, maxSize);

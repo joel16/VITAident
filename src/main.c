@@ -54,11 +54,17 @@ int main(int argc, char *argv[])
 		printStarWithColor(COLOR_GREEN); printf("Memory card storage: %s\n", getStorageInfo(0));
 		printStarWithColor(COLOR_GREEN); printf("Memory card storage free: %s\n", getStorageInfo(1));	
 	}
-	else if (vshRemovableMemoryGetCardInsertState() == 0)
-	{
-		printStarWithColor(COLOR_GREEN); printf("Internal storage: %s\n", getStorageInfo(0));
-		printStarWithColor(COLOR_GREEN); printf("Internal storage free: %s\n", getStorageInfo(1));
-	}
+	
+	char free_size_string[16], max_size_string[16];
+	SceOff freeSize = getPartitionInfo(0, "ur0:");
+	SceOff maxSize = getPartitionInfo(1, "ur0:");
+	
+	getSizeString(free_size_string, freeSize);
+	getSizeString(max_size_string, maxSize);
+	
+	printStarWithColor(COLOR_GREEN); printf("Internal storage: %s\n", max_size_string);
+	printStarWithColor(COLOR_GREEN); printf("Internal storage free: %s\n", free_size_string);
+	
 	/*else
 		printStarWithColor(COLOR_GREEN); printf("Memory card not inserted."); //Although this is basically impossible on PCH-1000*/
 

@@ -16,6 +16,7 @@ typedef struct {
 
 int fileExists(const char* path);
 int dirExists(const char* path);
+SceOff getPartitionInfo(int storage, const char * partition);
 const char * getVitaModel();
 
 #endif
