@@ -78,7 +78,7 @@ char * getUnit()
 	else if ((vshSblAimgrIsTest()) && (vshSysconIsShowMode()))
 		return "Devkit | Show unit";
 	else if (vshSblAimgrIsTest())
-		return "Devkit";
+		return "Testing unit";
 	else if (vshSblAimgrIsTool())
 		return "Debug tool";
 	else 
@@ -89,6 +89,12 @@ const char * getDeviceModel()
 {
 	if(vshSblAimgrIsGenuineVITA())
 		return getVitaModel();
+	else if (vshSblAimgrIsTest())
+		return "PTEL-1000";
+	else if (vshSblAimgrIsTool())
+		return "PDEL-1000";
+	else if ((vshSblAimgrIsTest()) && (vshSysconIsShowMode()))
+		return "DEM-3000";
 	else if(vshSblAimgrIsGenuineDolce())
 		return "VTE-1000";
 	else
