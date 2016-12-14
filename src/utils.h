@@ -6,7 +6,7 @@
 
 #define printf psvDebugScreenPrintf
 
-void printStarWithColor(Color color);
+void setColor(Color color); //Set font color
 void getSizeString(char *string, uint64_t size);
 
 #endif
