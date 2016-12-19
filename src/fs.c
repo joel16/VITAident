@@ -55,7 +55,7 @@ SceOff getPartitionInfo(int storage, const char * partition)
 		return maxSize;
 }
 
-const char * getVitaModel()
+char * getVitaModel()
 {	
 	SceOff maxSize = getPartitionInfo(1, "ur0:");
 	
@@ -63,7 +63,7 @@ const char * getVitaModel()
 	getSizeString(string, maxSize);
 	
 	if (strcmp(string, "1.50 GB") == 0)
-		return "PCH-2000";
+		return "2000";
 	else 
-		return "PCH-1000";
+		return "1000";
 }

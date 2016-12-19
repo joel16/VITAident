@@ -1,5 +1,6 @@
 #include "fs.h"
 #include "kernel.h"
+#include "utils.h"
 
 char * getFwVersion()
 {
@@ -80,32 +81,30 @@ char * getUnit()
 	else if (vshSblAimgrIsTest())
 		return "Testing unit";
 	else if (vshSblAimgrIsTool())
-		return "Debug tool";
+		return "Development unit";
 	else 
 		return "PS Vita TV"; //Because it returns NULL running on a VITA TV
 }
 
 const char * getDeviceModel()
 {
-	if(vshSblAimgrIsGenuineVITA())
-		return getVitaModel();
-	else if (vshSblAimgrIsTest())
-		return "PTEL-1000";
-	else if (vshSblAimgrIsTool())
-		return "PDEL-1000";
-	else if ((vshSblAimgrIsTest()) && (vshSysconIsShowMode()))
-		return "DEM-3000";
-	else if(vshSblAimgrIsGenuineDolce())
+	if ((vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
+		return concat("PCH-", getVitaModel());
+	else if ((vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineDolce()))
 		return "VTE-1000";
+	else if ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (vshSblAimgrIsDEX()))
+		return concat("PTEL-", getVitaModel());
+	else if (vshSblAimgrIsTool())
+		return concat("PDEL-", getVitaModel());
 	else
 		return "Uknown";
 }
 
 const char * getBoard()
 {
-	if (strcmp(getVitaModel(), "PCH-2000") == 0)
+	if (strcmp(getVitaModel(), "2000") == 0)
 		return "USS-1001";
-	else if (strcmp(getVitaModel(), "PCH-1000") == 0)
+	else if (strcmp(getVitaModel(), "1000") == 0)
 		return "IRS-002";
 	else if(vshSblAimgrIsGenuineDolce())
 		return "DOL-1001";

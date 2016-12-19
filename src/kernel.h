@@ -22,12 +22,14 @@ int _vshAppMgrCloudDataGetMcId(char mCID[32]);
 
 int vshSblAimgrIsCEX();
 int vshSblAimgrIsDEX();
-int vshSysconIsIduMode();
-int vshSysconIsShowMode();
 int vshSblAimgrIsGenuineVITA();
 int vshSblAimgrIsGenuineDolce();
 int vshSblAimgrIsTest();
 int vshSblAimgrIsTool();
+
+int vshSysconIsIduMode();
+int vshSysconIsShowMode();
+int vshSysconHasWWAN();
 
 int vshRemovableMemoryGetCardInsertState();
 

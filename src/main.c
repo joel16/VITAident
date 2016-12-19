@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	setColor(RED); printf("* "); setColor(WHITE); printf("Firmware version: "); 
 		setColor(RED); printf("%.4s\n", getFwVersion());//, getHenkakuVersion());
 	setColor(RED); printf("* "); setColor(WHITE); printf("Model version: "); 
-		setColor(RED); printf("%s (0x%08X)\n", getDeviceModel(), getModel());
+		setColor(RED); printf("%s %s (0x%08X)\n", getDeviceModel(), vshSysconHasWWAN()? "3G" : "WiFi", getModel());
 	setColor(RED); printf("* "); setColor(WHITE); printf("PS Vita unit:"); 
 		setColor(RED); printf("%s\n", getUnit());
 	setColor(RED); printf("* "); setColor(WHITE); printf("Motherboard: "); 
