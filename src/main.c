@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 	if (!(getModel() == 0x00020000))//if its a PS Vita TV this info is uselsss.
 	{
 		setColor(BLUE); printf("* "); setColor(WHITE); printf("Battery percentage: "); 
-			setColor(BLUE); printf("%s\n", displayBatteryPercentage());
+			setColor(BLUE); printf("%s (%s)\n", displayBatteryPercentage(), batteryStatus());
 		setColor(BLUE); printf("* "); setColor(WHITE); printf("Battery remaining Capacity: "); 
 			setColor(BLUE); printf("%s\n", GetBatteryRemainCapacity());
 		int batteryLifeTime = scePowerGetBatteryLifeTime();
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 	/*else
 		printf("* "); printf("Memory card not inserted."); //Although this is basically impossible on PCH-1000*/
 
-	setColor(GREEN); printf("\n> Press start to exit =)");
+	setColor(GREEN); printf("\n> Press any key to exit =)");
 	
 	while (1) 
 	{	
@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
 		
 		sceCtrlPeekBufferPositive(0, &pad, 1);
 	
-		if (pad.buttons & SCE_CTRL_START)
+		if (pad.buttons & SCE_CTRL_ANY_KEY)
 		{
 			if (!(dirExists("ux0:/data/VID000016")))
 			{
