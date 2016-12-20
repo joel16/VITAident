@@ -3,8 +3,8 @@
 ![VITAident Banner](http://i.imgur.com/X8f2S3Q.png)
 
 # Features:
-- Displays firmware and model info (Vita fat/slim/TV).
-- Displays PS Vita Unit (cex/dex).
+- Displays firmware and model info (Vita fat/slim/TV/PTEL/PDEL).
+- Displays PS Vita Unit (Cex/Dex).
 - Displays Vita motherboard.
 - Displays PS VITA CID (Console ID).
 - Displays PSID.
@@ -14,7 +14,7 @@
 - Displays ARM, BUS and GPU clock frequency.
 - Displays GPU Xbar clock frequency.
 - Displays battery life time.
-- Displays battery percentage.
+- Displays battery percentage, and charging status.
 - Displays battery remaining capacity.
 - Displays battery temperature in both degrees C and F.
 - Displays battery voltage.
@@ -25,4 +25,4 @@
 
 
 # Credits: 
-Major_Tom, Smoke, TheOfficialFloW, Rinnegatamante and himanshugoel2797.
+Major_Tom, Smoke, TheOfficialFloW, Rinnegatamante, himanshugoel2797, franci95 and fate6.
