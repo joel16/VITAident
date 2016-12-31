@@ -6,6 +6,7 @@
 #include <psp2/kernel/openpsid.h>
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <string.h>
 
 typedef struct {
@@ -33,7 +34,7 @@ int vshSysconHasWWAN();
 
 int vshRemovableMemoryGetCardInsertState();
 
-char * getFwVersion();
+char * getFwVersion(bool spoofed);
 char getHenkakuVersion();
 int getModel();
 char * getCID();

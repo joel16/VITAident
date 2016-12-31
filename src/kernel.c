@@ -2,15 +2,33 @@
 #include "kernel.h"
 #include "utils.h"
 
-char * getFwVersion()
+char * getFwVersion(bool spoofed)
 {
-	static char version[10];
+	static char version[16];
+	unsigned char str[32] = "";
 	
-	SceSystemSwVersionParam param;
-	param.size = sizeof(SceSystemSwVersionParam);
-	sceKernelGetSystemSwVersion(&param);
+	if (spoofed == true)
+	{
+		SceSystemSwVersionParam param;
+		param.size = sizeof(SceSystemSwVersionParam);
+		sceKernelGetSystemSwVersion(&param);
 	
-	sprintf(version, "%s", param.version_string);
+		sprintf(version, "%s", param.version_string);
+	}
+	
+	else
+	{
+		SceUID file = sceIoOpen("os0:psp2bootconfig.skprx", SCE_O_RDONLY, 0777);
+	
+		if(file < 0)
+			return "Unknown firmware";
+	
+		sceIoLseek(file, 146, SCE_SEEK_SET);
+		sceIoRead(file, &str, 8);
+		sceIoClose(file);
+		
+		sprintf(version, "%x.%02x", str[3], str[2]);
+	}
 	
 	return version;
 }

@@ -18,10 +18,12 @@ int main(int argc, char *argv[])
 	psvDebugScreenInit();
 	
 	//printf("\x1b[0;0H"); //Move the cursor to the top left corner of the screen
-	setColor(GREEN); printf("VITAident 0.5\n\n");
+	setColor(GREEN); printf("VITAident 0.6\n\n");
 	
 	setColor(RED); printf("* "); setColor(WHITE); printf("Firmware version: "); 
-		setColor(RED); printf("%.4s\n", getFwVersion());//, getHenkakuVersion());
+		setColor(RED); printf("%s\n", getFwVersion(false));
+	setColor(RED); printf("* "); setColor(WHITE); printf("System version: "); 
+		setColor(RED); printf("%.4s\n", getFwVersion(true));
 	setColor(RED); printf("* "); setColor(WHITE); printf("Model version: "); 
 		setColor(RED); printf("%s %s (0x%08X)\n", getDeviceModel(), vshSysconHasWWAN()? "3G" : "WiFi", getModel());
 	setColor(RED); printf("* "); setColor(WHITE); printf("PS Vita unit:"); 
