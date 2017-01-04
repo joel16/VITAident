@@ -10,7 +10,7 @@
 
 void initAppUtil();
 void termAppUtil();
-char * getUser();
+SceChar8 * getUser();
 const char * getLang();
 char * getStorageInfo(int type);
 const char * getEnterButton();

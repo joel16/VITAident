@@ -15,12 +15,12 @@ void termAppUtil()
 	sceAppUtilShutdown();
 }
 
-char * getUser()
+SceChar8 * getUser()
 {
 	static SceChar8 userName[SCE_SYSTEM_PARAM_USERNAME_MAXSIZE];
 	sceAppUtilSystemParamGetString(SCE_SYSTEM_PARAM_ID_USERNAME, userName, SCE_SYSTEM_PARAM_USERNAME_MAXSIZE);
 	
-	return (char *)userName;
+	return userName;
 }
 
 const char * getLang()
@@ -75,9 +75,9 @@ char * getStorageInfo(int type)
 const char * getEnterButton()
 {
 	int enterButton;
-
     sceAppUtilSystemParamGetInt(SCE_SYSTEM_PARAM_ID_ENTER_BUTTON, &enterButton);
-    if (enterButton == SCE_SYSTEM_PARAM_ENTER_BUTTON_CIRCLE)
+    
+	if (enterButton == SCE_SYSTEM_PARAM_ENTER_BUTTON_CIRCLE)
 		return "Circle (O)";
 	else 
 		return "Cross (X)";
