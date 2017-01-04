@@ -3,7 +3,7 @@
 ![VITAident Banner](http://i.imgur.com/X8f2S3Q.png)
 
 # Features:
-- Displays firmware and model info (Vita fat/slim/TV/PTEL/PDEL).
+- Displays firmware (spoof/actual) and model info (Vita fat/slim/TV/PTEL/PDEL).
 - Displays PS Vita Unit (Cex/Dex).
 - Displays Vita motherboard.
 - Displays PS VITA CID (Console ID).
@@ -21,7 +21,6 @@
 - Displays PSN username.
 - Displays SD free and total capacity (Thanks TheOfficialFloW).
 - Displays enter button (Cross/Circle).
-- Automatically saves screenshot upon exit.
 
 
 # Credits: 
