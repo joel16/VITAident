@@ -104,23 +104,7 @@ int main(int argc, char *argv[])
 		sceCtrlPeekBufferPositive(0, &pad, 1);
 	
 		if (pad.buttons & SCE_CTRL_ANY_KEY)
-		{
-			if (!(dirExists("ux0:/data/VID000016")))
-			{
-				SceUID dir;
-				
-				dir = sceIoDopen("ux0:/data/VID000016");
-				sceIoMkdir("ux0:/data/VID000016", 0777);
-				sceIoDclose(dir);
-				
-				dir = sceIoDopen("ux0:/data/VID000016/screenshots");
-				sceIoMkdir("ux0:/data/VID000016/screenshots", 0777);
-				sceIoDclose(dir);
-			}
-			
-			captureScreenshot("ux0:/data/VID000016/screenshots/VITAident.bmp");
 			break;
-		}
 	}
 	
 	termNet();
