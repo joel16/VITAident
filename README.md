@@ -1,4 +1,4 @@
-# VITAident
+# VITAident [![Github latest downloads](https://img.shields.io/github/downloads/joel16/VITAident/total.svg)](https://github.com/joel16/VITAident/releases/latest)
 
 ![VITAident Banner](http://i.imgur.com/X8f2S3Q.png)
 
