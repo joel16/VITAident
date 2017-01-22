@@ -15,7 +15,7 @@ int getClockFrequency(ClockFrequencyType type)
 		return 0;
 }
 
-const char * batteryStatus()
+const char * getBatteryStatus()
 {
 	int batteryStateBool = scePowerIsBatteryCharging();
 	
@@ -25,7 +25,7 @@ const char * batteryStatus()
 		return "Charging";
 }
 
-char * displayBatteryPercentage()
+char * getBatteryPercentage()
 {
 	static char percentage[5];
 	
@@ -36,13 +36,68 @@ char * displayBatteryPercentage()
 	return percentage;
 }
 
-char * GetBatteryRemainCapacity()
+/*char * getBatteryElec() //Crashes the VITA
+{
+	static char batteryElec[10];
+	
+	int elec = scePowerGetBatteryElec();
+	
+	sprintf(batteryElec, "%d", elec);
+	
+	return batteryElec;
+}*/
+
+char * getUsingWireless()
+{
+	static char usingWireless[10];
+	
+	int wireless = scePowerGetUsingWireless();
+	
+	sprintf(usingWireless, "%d", wireless);
+	
+	return usingWireless;
+}
+
+char * getBatterySOH()
+{
+	static char SOH[10];
+	
+	int batterySOH = scePowerGetBatterySOH();
+	
+	sprintf(SOH, "%d%%", batterySOH);
+	
+	return SOH;
+}
+
+char * getBatteryCycleCount()
+{
+	static char count[10];
+	
+	int cycleCount = scePowerGetBatteryCycleCount();
+	
+	sprintf(count, "%d", cycleCount);
+	
+	return count;
+}
+
+char * getBatteryCapacity()
 {
 	static char capacity[10];
 	
-	int battery = scePowerGetBatteryRemainCapacity();
+	int fullCapacity = scePowerGetBatteryFullCapacity();
 	
-	sprintf(capacity, "%i mAh", battery);
+	sprintf(capacity, "%i mAh", fullCapacity);
+	
+	return capacity;
+}
+
+char * getBatteryRemainCapacity()
+{
+	static char capacity[10];
+	
+	int remainCapacity = scePowerGetBatteryRemainCapacity();
+	
+	sprintf(capacity, "%i mAh", remainCapacity);
 	
 	return capacity;
 }
@@ -68,4 +123,32 @@ char * getBatteryVoltage()
 	sprintf(volts, "%0.1f" , (((float)scePowerGetBatteryVolt()) / 1000));
 	
 	return volts;
+}
+
+char * getUdcdCableState()
+{
+	static char udcdState[20];
+	SceUdcdDeviceState state;
+	sceUdcdGetDeviceState(&state);
+
+	if (state.cable & SCE_UDCD_STATUS_CABLE_CONNECTED)
+		sprintf(udcdState, "Cable connected");
+	else if (state.cable & SCE_UDCD_STATUS_CABLE_DISCONNECTED)
+		sprintf(udcdState, "Cable disonnected");
+	
+	return udcdState;
+}
+
+char * getUdcdChargingState()
+{
+	static char udcdState[20];
+	SceUdcdDeviceState state;
+	sceUdcdGetDeviceState(&state);
+
+	if (state.state & SCE_UDCD_STATUS_IS_CHARGING)
+		sprintf(udcdState, "USB charging enabled");
+	else 
+		sprintf(udcdState, "USB charging disabled");
+	
+	return udcdState;
 }
