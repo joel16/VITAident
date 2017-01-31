@@ -15,6 +15,8 @@ void psvDebugScreenInit();
 // clears screen with a given color
 void psvDebugScreenClear(int bg_color);
 
+void printTextScreen(const char * text);
+
 // printf to the screen
 void psvDebugScreenPrintf(const char *format, ...);
 

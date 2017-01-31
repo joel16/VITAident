@@ -17,98 +17,79 @@ int main(int argc, char *argv[])
 	initNet();
 	psvDebugScreenInit();
 	
-	//printf("\x1b[0;0H"); //Move the cursor to the top left corner of the screen
-	setColor(GREEN); printf("VITAident 0.7\n\n");
+	printStr(false, GREEN, "", "VITAident 0.7.1\n\n");
 	
+
 	/*Kernel Info*/
 	
-	setColor(RED); printf("* "); setColor(WHITE); printf("Firmware version: "); 
-		setColor(RED); printf("%s\n", getFwVersion(false));
-	
-	setColor(RED); printf("* "); setColor(WHITE); printf("System version: "); 
-		setColor(RED); printf("%.4s\n", getFwVersion(true));
-	
-	setColor(RED); printf("* "); setColor(WHITE); printf("Model version: "); 
-		setColor(RED); printf("%s %s (0x%08X)\n", getDeviceModel(), vshSysconHasWWAN()? "3G" : "WiFi", getModel());
-	
-	setColor(RED); printf("* "); setColor(WHITE); printf("PS Vita unit:"); 
-		setColor(RED); printf("%s\n", getUnit());
-	
-	setColor(RED); printf("* "); setColor(WHITE); printf("Motherboard: "); 
-		setColor(RED); printf("%s\n", getBoard());
-	
-	setColor(RED); printf("* "); setColor(WHITE); printf("PS Vita CID: "); 
-		setColor(RED); printf("%s\n", getCID());  //Thanks Major_Tom
-	
-	/*setColor(RED); printf("* "); setColor(WHITE); printf("PS Vita MCID: "); 
-		setColor(RED); printf("%.8s\n", getmCID());*/
-	
-	setColor(RED); printf("* "); setColor(WHITE); printf("PSID: "); 
-		setColor(RED); printf("%02X\n\n", getPSID()); //Thanks SMOKE
+	printStr(true, RED, "Firmware version: ", "%s\n", getFwVersion(false));
+
+	printStr(true, RED, "System version: ", "%.4s\n", getFwVersion(true));
+
+	printStr(true, RED, "Model version: ", "%s %s (0x%08X)\n", getDeviceModel(), vshSysconHasWWAN()? "3G" : "WiFi", getModel());
+
+	printStr(true, RED, "PS Vita unit:", "%s\n", getUnit());
+
+	printStr(true, RED, "Motherboard: ", "%s\n", getBoard());
+
+	printStr(true, RED, "PS Vita CID: ", "%s\n", getCID());  //Thanks Major_Tom
+
+	/* printStr(true, RED, "PS Vita MCID: ", "%.8s\n", getmCID()); */
+
+	printStr(true, RED, "PSID: ", "%02X\n\n", getPSID()); //Thanks SMOKE
 	
 
 	/*System Info*/
 	
-	setColor(GOLD); printf("* "); setColor(WHITE); printf("Language: "); 
-		setColor(GOLD); printf("%s\n", getLang());
+	printStr(true, YELLOW, "Language: ", "%s\n", getLang());
 	
-	setColor(GOLD); printf("* "); setColor(WHITE); printf("MAC address:"); 
-		setColor(GOLD); printf("%s\n", getMacAddress());
+	printStr(true, YELLOW, "MAC address:", "%s\n", getMacAddress());
 	
-	setColor(GOLD); printf("* "); setColor(WHITE); printf("IP address: ");
-		setColor(GOLD); printf("%s\n", getIP());
+	printStr(true, YELLOW, "IP address: ", "%s\n", getIP());
 	
-	setColor(GOLD); printf("* "); setColor(WHITE); printf("ARM clock frequency: "); 
-		setColor(GOLD); printf("%d MHz\n", getClockFrequency(ClockFrequencyType_Cpu));
+	printStr(true, YELLOW, "ARM clock frequency: ", "%d MHz\n", getClockFrequency(ClockFrequencyType_Cpu));
 	
-	setColor(GOLD); printf("* "); setColor(WHITE); printf("BUS clock frequency: "); 
-		setColor(GOLD); printf("%d MHz\n", getClockFrequency(ClockFrequencyType_Bus)); 
+	printStr(true, YELLOW, "BUS clock frequency: ", "%d MHz\n", getClockFrequency(ClockFrequencyType_Bus)); 
 	
-	/*setColor(GOLD); printf("* "); setColor(WHITE); printf("GPU clock frequency: "); 
-		setColor(GOLD); printf("%d MHz\n", getClockFrequency(ClockFrequencyType_Gpu));*/
+	//printStr(true, YELLOW, "GPU clock frequency: ", "%d MHz\n", getClockFrequency(ClockFrequencyType_Gpu));
 	
-	setColor(GOLD); printf("* "); setColor(WHITE); printf("GPU Xbar clock frequency: "); 
-		setColor(GOLD); printf("%d MHz\n\n", getClockFrequency(ClockFrequencyType_GpuXbar)); 
+	printStr(true, YELLOW, "GPU Xbar clock frequency: ", "%d MHz\n\n", getClockFrequency(ClockFrequencyType_GpuXbar)); 
 	
 	
 	/*Battery Info*/
 	
 	if (!(getModel() == 0x00020000))//if its a PS Vita TV this info is uselsss.
 	{
-		setColor(BLUE); printf("* "); setColor(WHITE); printf("Battery percentage: "); 
-			setColor(BLUE); printf("%s (%s)\n", getBatteryPercentage(), getBatteryStatus());
-			
-		setColor(BLUE); printf("* "); setColor(WHITE); printf("Battery capacity: "); 
-			setColor(BLUE); printf("%s ", getBatteryCapacity());
-				setColor(WHITE); printf("(remaining: "); setColor(BLUE); printf("%s)\n", getBatteryRemainCapacity());
-			
+		printStr(true, BLUE, "Battery percentage: ", "%s (%s)\n", getBatteryPercentage(), getBatteryStatus());
+		
+		printStr(true, BLUE, "Battery capacity: ", "%s ", getBatteryCapacity());
+		printStr(false, BLUE, "(remaining: ", "%s", getBatteryRemainCapacity());
+		printStr(false, BLUE, ")\n", "");
+		
 		int batteryLifeTime = scePowerGetBatteryLifeTime();
-		setColor(BLUE); printf("* "); setColor(WHITE); printf("Battery life time: "); 
-			setColor(BLUE); printf("%02dh %02dm ", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
-				setColor(WHITE); printf("(SOH: "); setColor(BLUE); printf(" %s)\n", getBatterySOH());
+		printStr(true, BLUE, "Battery life time: ", "%02dh %02dm ", batteryLifeTime/60, batteryLifeTime-(batteryLifeTime/60*60));
+		printStr(false, BLUE, "(SOH: ", " %s", getBatterySOH());
+		printStr(false, BLUE, ")\n", "");
 		
-		setColor(BLUE); printf("* "); setColor(WHITE); printf("Battery temperature: "); 
-			setColor(BLUE); printf("%s C (%s F)\n", getBatteryTemp(0), getBatteryTemp(1)); 
+		printStr(true, BLUE, "Battery voltage: ", "%s V ", getBatteryVoltage());
+		printStr(false, BLUE, "(cycle count: ", "%s", getBatteryCycleCount());
+		printStr(false, BLUE, ")\n", "");
 		
-		setColor(BLUE); printf("* "); setColor(WHITE); printf("Battery voltage: "); 
-			setColor(BLUE); printf("%s V ", getBatteryVoltage());
-				setColor(WHITE); printf("(cycle count: "); setColor(BLUE); printf("%s)\n", getBatteryCycleCount());
-		
-		setColor(BLUE); printf("* "); setColor(WHITE); printf("Udcd state: "); 
-			setColor(BLUE); printf("%s (%s)\n\n", getUdcdCableState(), getUdcdChargingState());
+		printStr(true, BLUE, "Udcd state: ", "%s (%s)\n\n", getUdcdCableState(), getUdcdChargingState());
 	}
 	
-	setColor(GREEN); printf("* "); setColor(WHITE); printf("Username: "); 
-		setColor(GREEN); printf("%s\n", getUser());
-	setColor(GREEN); printf("* "); setColor(WHITE); printf("Enter button: "); 
-		setColor(GREEN); printf("%s\n", getEnterButton());
 	
-	if (vshRemovableMemoryGetCardInsertState() == 1)
+	/* Misc info */
+	
+	printStr(true, GREEN, "Username: ", "%s\n", getUser());
+
+	printStr(true, GREEN, "Enter button: ", "%s\n", getEnterButton());
+	
+	if (vshRemovableMemoryGetCardInsertState() == 1) //Memory card is inserted
 	{
-		setColor(GREEN); printf("* "); setColor(WHITE); printf("Memory card storage: "); 
-			setColor(GREEN); printf("%s\n", getStorageInfo(0));
-		setColor(GREEN); printf("* "); setColor(WHITE); printf("Memory card storage free: "); 
-			setColor(GREEN); printf("%s\n", getStorageInfo(1));	
+		printStr(true, GREEN, "Memory card storage: ", "%s\n", getStorageInfo(0));
+
+		printStr(true, GREEN, "Memory card storage free: ", "%s\n", getStorageInfo(1));
 	}
 	
 	char free_size_string[16], max_size_string[16];
@@ -118,15 +99,11 @@ int main(int argc, char *argv[])
 	getSizeString(free_size_string, freeSize);
 	getSizeString(max_size_string, maxSize);
 	
-	setColor(GREEN); printf("* "); setColor(WHITE); printf("Internal storage: "); 
-		setColor(GREEN); printf("%s\n", max_size_string);
-	setColor(GREEN); printf("* "); setColor(WHITE); printf("Internal storage free: "); 
-		setColor(GREEN); printf("%s\n", free_size_string);
-	
-	/*else
-		printf("* "); printf("Memory card not inserted."); //Although this is basically impossible on PCH-1000*/
+	printStr(true, GREEN, "Internal storage: ", "%s\n", max_size_string);
 
-	setColor(GREEN); printf("\n> Press any key to exit =)");
+	printStr(true, GREEN, "Internal storage free: ", "%s\n", free_size_string);
+
+	printStr(false, GREEN, "", "\n> Press any key to exit =)");
 	
 	while (1) 
 	{	

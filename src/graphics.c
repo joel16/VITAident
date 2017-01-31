@@ -104,7 +104,7 @@ void psvDebugScreenClear(int bg_color)
 	}
 }
 
-static void printTextScreen(const char * text)
+void printTextScreen(const char * text)
 {
 	int c, i, j, l;
 	u8 *font;

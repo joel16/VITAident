@@ -1,8 +1,33 @@
+#include "graphics.h"
 #include "utils.h"
 
 void setColor(Color color)
 {
 	psvDebugScreenSetFgColor(color);
+}
+
+int printStr(bool printStar, Color color, char message[250], char *info, ...)
+{
+	char buf[512];
+
+	va_list opt;
+	va_start(opt, info);
+	
+	if (printStar == true)
+	{
+		setColor(color); 
+		printf("* "); 
+	}
+	
+	setColor(WHITE); 
+	printf("%s", message); 
+	
+	setColor(color); 
+	int ret = vsnprintf(buf, sizeof(buf), info, opt);
+	printTextScreen(buf);
+	va_end(opt);
+	
+	return ret;
 }
 
 void getSizeString(char *string, uint64_t size) //Thanks TheOfficialFloW
