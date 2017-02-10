@@ -129,3 +129,40 @@ const char * getBoard()
 	else
 		return "Uknown";
 }
+
+/*
+
+const char * getSysrootKernelModes(int data)
+{
+	if (data == 0) //ksceSysrootIsExternalBootMode
+	{
+		if (ksceSysrootIsExternalBootMode() == 0)
+			return "boot mode enabled";
+		else 
+			return "boot mode disabled";
+	}
+	
+	else if (data == 1) //ksceSysrootIsManufacturingMode
+	{
+		if (ksceSysrootIsManufacturingMode() == 0)
+			return "manufacturing mode enabled";
+		else 
+			return "manufacturing mode disabled";
+	}
+	
+	else if (data == 2) //ksceSysrootIsSafeMode
+	{
+		if (ksceSysrootIsSafeMode() == 0)
+			return "safe mode enabled";
+		else 
+			return "safe mode disabled";
+	}
+	
+	else //ksceSysrootIsUpdateMode
+	{
+		if (ksceSysrootIsUpdateMode() == 0)
+			return "update mode enabled";
+		else 
+			return "update mode disabled";
+	}
+}*/

@@ -28,6 +28,11 @@ int vshSblAimgrIsGenuineDolce();
 int vshSblAimgrIsTest();
 int vshSblAimgrIsTool();
 
+/*int ksceSysrootIsExternalBootMode();
+int ksceSysrootIsManufacturingMode();
+int ksceSysrootIsSafeMode();
+int ksceSysrootIsUpdateMode();*/
+
 int vshSysconIsIduMode();
 int vshSysconIsShowMode();
 int vshSysconHasWWAN();
@@ -43,5 +48,6 @@ SceKernelOpenPsId getPSID();
 char * getUnit();
 const char * getDeviceModel();
 const char * getBoard();
+const char * getSysrootKernelModes(int data);
 
 #endif

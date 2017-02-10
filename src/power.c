@@ -134,7 +134,7 @@ char * getUdcdCableState()
 	if (state.cable & SCE_UDCD_STATUS_CABLE_CONNECTED)
 		sprintf(udcdState, "Cable connected");
 	else if (state.cable & SCE_UDCD_STATUS_CABLE_DISCONNECTED)
-		sprintf(udcdState, "Cable disonnected");
+		sprintf(udcdState, "Cable disconnected");
 	
 	return udcdState;
 }

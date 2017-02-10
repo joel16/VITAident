@@ -17,14 +17,14 @@ int main(int argc, char *argv[])
 	initNet();
 	psvDebugScreenInit();
 	
-	printStr(false, GREEN, "", "VITAident 0.7.1\n\n");
+	printStr(false, GREEN, "", "VITAident 0.7\n\n");
 	
 
 	/*Kernel Info*/
 	
 	printStr(true, RED, "Firmware version: ", "%s\n", getFwVersion(false));
 
-	printStr(true, RED, "System version: ", "%.4s\n", getFwVersion(true));
+	printStr(true, RED, "System version: ", "%s\n", getFwVersion(true));
 
 	printStr(true, RED, "Model version: ", "%s %s (0x%08X)\n", getDeviceModel(), vshSysconHasWWAN()? "3G" : "WiFi", getModel());
 
@@ -75,7 +75,9 @@ int main(int argc, char *argv[])
 		printStr(false, BLUE, "(cycle count: ", "%s", getBatteryCycleCount());
 		printStr(false, BLUE, ")\n", "");
 		
-		printStr(true, BLUE, "Udcd state: ", "%s (%s)\n\n", getUdcdCableState(), getUdcdChargingState());
+		printStr(true, BLUE, "Udcd state: ", "%s", getUdcdCableState());
+		printStr(false, BLUE, "(", "%s", getUdcdChargingState());
+		printStr(false, BLUE, ")\n\n", "");
 	}
 	
 	
