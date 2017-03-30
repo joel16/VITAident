@@ -17,8 +17,7 @@ int main(int argc, char *argv[])
 	initNet();
 	psvDebugScreenInit();
 	
-	printStr(false, GREEN, "", "VITAident 0.7\n\n");
-	
+	printStr(false, GREEN, "", "VITAident 0.7.1\n\n");
 
 	/*Kernel Info*/
 	
@@ -46,6 +45,8 @@ int main(int argc, char *argv[])
 	printStr(true, YELLOW, "MAC address:", "%s\n", getMacAddress());
 	
 	printStr(true, YELLOW, "IP address: ", "%s\n", getIP());
+	
+	printStr(true, YELLOW, "Username: ", "%s\n", getUser());
 	
 	printStr(true, YELLOW, "ARM clock frequency: ", "%d MHz\n", getClockFrequency(ClockFrequencyType_Cpu));
 	
@@ -82,10 +83,11 @@ int main(int argc, char *argv[])
 	
 	
 	/* Misc info */
-	
-	printStr(true, GREEN, "Username: ", "%s\n", getUser());
 
 	printStr(true, GREEN, "Enter button: ", "%s\n", getEnterButton());
+	
+	printStr(true, GREEN, "Brightness: ", "%d%%\n",  getBrightness());
+	printStr(true, GREEN, "Volume: ", "%d%%\n",  getVolume());
 	
 	if (vshRemovableMemoryGetCardInsertState() == 1) //Memory card is inserted
 	{
