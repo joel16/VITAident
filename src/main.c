@@ -5,7 +5,6 @@
 #include "main.h"
 #include "net.h"
 #include "power.h"
-#include "screenshot.h"
 #include "utils.h"
 
 int main(int argc, char *argv[]) 
