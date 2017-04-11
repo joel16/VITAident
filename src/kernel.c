@@ -131,7 +131,6 @@ const char * getBoard()
 }
 
 /*
-
 const char * getSysrootKernelModes(int data)
 {
 	if (data == 0) //ksceSysrootIsExternalBootMode

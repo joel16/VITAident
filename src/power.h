@@ -35,6 +35,6 @@ char * getBatteryRemainCapacity();
 char * getBatteryTemp(int type);
 char * getBatteryVoltage();
 char * getUdcdCableState();
-char * getUdcdChargingState();
+char * getUsbChargingState();
 
 #endif

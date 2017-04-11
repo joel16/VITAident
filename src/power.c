@@ -1,4 +1,5 @@
 #include "power.h"
+#include "utils.h"
 
 int getClockFrequency(ClockFrequencyType type)
 {
@@ -139,16 +140,18 @@ char * getUdcdCableState()
 	return udcdState;
 }
 
-char * getUdcdChargingState()
+char * getUsbChargingState() //USB power supply is system settings
 {
-	static char udcdState[20];
+	static char usbChargeState[20];
 	SceUdcdDeviceState state;
 	sceUdcdGetDeviceState(&state);
-
-	if (state.state & SCE_UDCD_STATUS_IS_CHARGING)
-		sprintf(udcdState, "USB charging enabled");
-	else 
-		sprintf(udcdState, "USB charging disabled");
 	
-	return udcdState;
+	int usbChargeEnable = regMgrGetInt("/CONFIG/USB/", "usb_charge_enable");
+
+	if (usbChargeEnable == 1)
+		sprintf(usbChargeState, "USB charging enabled");
+	else 
+		sprintf(usbChargeState, "USB charging disabled");
+	
+	return usbChargeState;
 }

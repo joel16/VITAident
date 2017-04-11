@@ -60,7 +60,9 @@ int main(int argc, char *argv[])
 	
 	if (!(getModel() == 0x00020000))//if its a PS Vita TV this info is uselsss.
 	{
-		printStr(true, BLUE, "Battery percentage: ", "%s (%s)\n", getBatteryPercentage(), getBatteryStatus());
+		printStr(true, BLUE, "Battery percentage: ", "%s ", getBatteryPercentage());
+		printStr(false, BLUE, "(", "%s", getBatteryStatus());
+		printStr(false, BLUE, ")\n", "");
 		
 		printStr(true, BLUE, "Battery capacity: ", "%s ", getBatteryCapacity());
 		printStr(false, BLUE, "(remaining: ", "%s", getBatteryRemainCapacity());
@@ -75,8 +77,8 @@ int main(int argc, char *argv[])
 		printStr(false, BLUE, "(cycle count: ", "%s", getBatteryCycleCount());
 		printStr(false, BLUE, ")\n", "");
 		
-		printStr(true, BLUE, "Udcd state: ", "%s", getUdcdCableState());
-		printStr(false, BLUE, "(", "%s", getUdcdChargingState());
+		printStr(true, BLUE, "Udcd state: ", "%s ", getUdcdCableState());
+		printStr(false, BLUE, "(", "%s", getUsbChargingState());
 		printStr(false, BLUE, ")\n\n", "");
 	}
 	
