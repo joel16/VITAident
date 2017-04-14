@@ -3,16 +3,14 @@
 
 int fileExists(const char* path)
 {
-	SceUID dir = sceIoOpen(path, SCE_O_RDONLY, 0777);
-	if (dir >= 0)
+	SceUID file = sceIoOpen(path, SCE_O_RDONLY, 0777);
+	if (file >= 0)
 	{
-		sceIoClose(dir);
+		sceIoClose(file);
 		return 1;
 	}
 	else
-	{
 		return 0;
-	}
 }
 
 int dirExists(const char* path)
@@ -24,9 +22,7 @@ int dirExists(const char* path)
 		return 1;
 	}
 	else 
-	{
 		return 0;
-	}
 }
 
 SceOff getPartitionInfo(int storage, const char * partition)

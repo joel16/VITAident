@@ -16,7 +16,7 @@ LDFLAGS =
 LIBS := -lSceDisplay_stub -lSceSysmodule_stub -lSceCtrl_stub -lSceCommonDialog_stub \
 		-lSceAppMgr_stub -lSceAppUtil_stub \
 		-lSceLibKernel_stub -lSceNet_stub -lSceNetCtl_stub -lScePower_stub  -lSceVshBridge_stub \
-		-lSceReg_stub -lSceUdcd_stub -lSceUsbstorVStorDriver_stub 
+		-lSceRegistryMgr_stub -lSceUdcd_stub -lSceUsbstorVStorDriver_stub 
 
 all: $(TARGET).vpk
 

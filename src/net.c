@@ -39,14 +39,11 @@ char * getIP()
 	static char address[16];
 
 	SceNetCtlInfo info;
+	
 	if (sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info) < 0) 
-	{
 		strcpy(address, "-");
-	}
 	else 
-	{
 		strcpy(address, info.ip_address);
-	}
 	
 	return address;
 }
