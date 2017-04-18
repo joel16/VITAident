@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	initNet();
 	psvDebugScreenInit();
 	
-	printStr(false, GREEN, "", "VITAident 0.7.1\n\n");
+	printStr(false, GREEN, "", "VITAident 0.7.2\n\n");
 
 	/*Kernel Info*/
 	
