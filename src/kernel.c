@@ -108,12 +108,12 @@ const char * getDeviceModel()
 {
 	if (isPCHX000)
 		return concat("PCH-", getVitaModel());
-	else if ((vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineDolce()))
-		return "VTE-1000";
-	else if ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
-		return concat("PTEL-", getVitaModel());
-	else if ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsTool()))
+	else if (isPDEL)
 		return concat("PDEL-", getVitaModel());
+	else if (isPTEL)
+		return concat("PTEL-", getVitaModel());
+	else if (isVTE1000)
+		return "VTE-1000";
 	else
 		return "Uknown";
 }
