@@ -14,9 +14,6 @@ typedef enum {
 	ClockFrequencyType_GpuXbar
 } ClockFrequencyType;
 
-int scePowerGetBatteryTemp();
-int scePowerGetBatteryVolt();
-int scePowerGetBatterySOH();
 int scePowerGetBatteryCycleCount();
 //int scePowerGetBatteryElec(); Crashes the VITA
 int scePowerGetUsingWireless();
