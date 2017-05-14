@@ -73,6 +73,10 @@ int main(int argc, char *argv[])
 		printStr(false, BLUE, "(SOH: ", " %s", getBatterySOH());
 		printStr(false, BLUE, ")\n", "");
 		
+		printStr(true, BLUE, "Battery temperature: ", "%s C ", getBatteryTemp(0));
+		printStr(false, BLUE, "(", "%s F", getBatteryTemp(1));
+		printStr(false, BLUE, ")\n", "");
+		
 		printStr(true, BLUE, "Battery voltage: ", "%s V ", getBatteryVoltage());
 		printStr(false, BLUE, "(cycle count: ", "%s", getBatteryCycleCount());
 		printStr(false, BLUE, ")\n", "");
