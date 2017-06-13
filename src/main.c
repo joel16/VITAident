@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	initNet();
 	psvDebugScreenInit();
 	
-	printStr(false, GREEN, "", "VITAident 0.7.2\n\n");
+	printStr(false, GREEN, "", "VITAident 0.7.3\n\n");
 
 	/*Kernel Info*/
 	
@@ -112,15 +112,20 @@ int main(int argc, char *argv[])
 
 	printStr(true, GREEN, "Internal storage free: ", "%s\n", free_size_string);
 
-	printStr(false, GREEN, "", "\n> Press any key to exit =)");
+	printStr(false, GREEN, "", "\n> Press any key to exit =) (O will dump your CID)");
 	
 	while (1) 
 	{	
-		//sceDisplayWaitVblankStart();
-		
 		sceCtrlPeekBufferPositive(0, &pad, 1);
 	
-		if (pad.buttons & SCE_CTRL_ANY_KEY)
+		if (pad.buttons & SCE_CTRL_CIRCLE)
+		{
+			char buf[32];
+			strcpy(buf, getCID());
+			writeFile("ux0:/cid.txt", buf, strlen(buf) + 1);
+			break;
+		}
+		else if (pad.buttons & SCE_CTRL_ANY_KEY)
 			break;
 	}
 	

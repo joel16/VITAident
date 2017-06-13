@@ -63,3 +63,16 @@ char * getVitaModel()
 	else 
 		return "1000";
 }
+
+int writeFile(char *file, void *buf, int size) 
+{
+	SceUID fd = sceIoOpen(file, SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
+	
+	if (fd < 0)
+		return fd;
+
+	int written = sceIoWrite(fd, buf, size);
+	sceIoClose(fd);
+	
+	return written;
+}
