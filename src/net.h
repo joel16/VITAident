@@ -8,9 +8,9 @@
 #include <stdio.h>
 #include <string.h>
 
-void initNet();
-void termNet();
-char * getMacAddress();
-char * getIP();
+SceVoid initNet(SceVoid);
+SceVoid termNet(SceVoid);
+char * getMacAddress(SceVoid);
+char * getIP(SceVoid);
 
 #endif

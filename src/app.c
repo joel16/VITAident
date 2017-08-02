@@ -1,7 +1,7 @@
 #include "app.h"
 #include "utils.h"
 
-void initAppUtil()
+SceVoid initAppUtil(SceVoid)
 {
 	SceAppUtilInitParam init;
 	SceAppUtilBootParam boot;
@@ -10,12 +10,12 @@ void initAppUtil()
 	sceAppUtilInit(&init, &boot);
 }
 
-void termAppUtil()
+SceVoid termAppUtil(SceVoid)
 {
 	sceAppUtilShutdown();
 }
 
-SceChar8 * getUser()
+SceChar8 * getUser(SceVoid)
 {
 	static SceChar8 userName[SCE_SYSTEM_PARAM_USERNAME_MAXSIZE];
 	sceAppUtilSystemParamGetString(SCE_SYSTEM_PARAM_ID_USERNAME, userName, SCE_SYSTEM_PARAM_USERNAME_MAXSIZE);
@@ -23,7 +23,7 @@ SceChar8 * getUser()
 	return userName;
 }
 
-const char * getLang()
+const char * getLang(SceVoid)
 {
 	const char *languages[] = 
 	{
@@ -57,9 +57,9 @@ const char * getLang()
 		return languages[18];
 }
 
-char * getStorageInfo(int type)
+char * getStorageInfo(SceInt type)
 {
-	uint64_t free_size = 0, max_size = 0;
+	SceULong64 free_size = 0, max_size = 0;
 	sceAppMgrGetDevInfo("ux0:", &max_size, &free_size);
 	
 	static char free_size_string[16], max_size_string[16];
@@ -72,13 +72,13 @@ char * getStorageInfo(int type)
 		return free_size_string;
 }
 
-const char * getEnterButton()
+SceBool getEnterButton(SceVoid) // Circle = 0, cross = 1
 {
-	int enterButton;
-    sceAppUtilSystemParamGetInt(SCE_SYSTEM_PARAM_ID_ENTER_BUTTON, &enterButton);
-    
-	if (enterButton == SCE_SYSTEM_PARAM_ENTER_BUTTON_CIRCLE)
-		return "Circle (O)";
-	else 
-		return "Cross (X)";
+	int enterButton = 0;
+	sceAppUtilSystemParamGetInt(SCE_SYSTEM_PARAM_ID_ENTER_BUTTON, &enterButton);
+	
+	if (enterButton == SCE_SYSTEM_PARAM_ENTER_BUTTON_CROSS)
+		return SCE_TRUE;
+	
+	return SCE_FALSE;
 }

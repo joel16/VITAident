@@ -7,17 +7,10 @@
 
 #include <string.h>
 
-typedef struct {
-	uint64_t max_size;
-	uint64_t free_size;
-	uint32_t cluster_size;
-	void *unk;
-} SceIoDevInfo;
-
-int fileExists(const char* path);
-int dirExists(const char* path);
-int writeFile(char *file, void *buf, int size);
-SceOff getPartitionInfo(int storage, const char * partition);
-char * getVitaModel();
+SceInt fileExists(const char * path);
+SceInt dirExists(const char * path);
+SceInt writeFile(char * file, SceVoid * buf, SceInt size);
+SceOff getPartitionInfo(SceInt storage, const char * partition);
+char * getVitaModel(SceVoid);
 
 #endif

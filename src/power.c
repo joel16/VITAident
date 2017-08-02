@@ -1,38 +1,38 @@
 #include "power.h"
 #include "utils.h"
 
-int getClockFrequency(ClockFrequencyType type)
+SceInt getClockFrequency(clockFrequencyType type)
 {
-	if (type == ClockFrequencyType_Cpu)
+	if (type == clockFrequencyType_cpu)
 		return scePowerGetArmClockFrequency();
-	else if (type == ClockFrequencyType_Bus)
+	else if (type == clockFrequencyType_bus)
 		return scePowerGetBusClockFrequency();
-	else if (type == ClockFrequencyType_Gpu)
+	else if (type == clockFrequencyType_gpu)
 		return scePowerGetGpuClockFrequency();
-	else if (type == ClockFrequencyType_GpuXbar)
+	else if (type == clockFrequencyType_gpuXbar)
 		return scePowerGetGpuXbarClockFrequency();
 	
 	else 
 		return 0;
 }
 
-const char * getBatteryStatus()
+const char * getBatteryStatus(SceVoid)
 {
-	int batteryStateBool = scePowerIsBatteryCharging();
+	SceInt batteryStateBool = scePowerIsBatteryCharging();
 	
 	if (!batteryStateBool) 
 		return "Not charging";
-	else 
-		return "Charging";
+	
+	return "Charging";
 }
 
-char * getBatteryPercentage()
+char * getBatteryPercentage(SceVoid)
 {
-	static char percentage[5];
+	static char percentage[6];
 	
 	int battery = scePowerGetBatteryLifePercent();
 	
-	sprintf(percentage, "%d%%", battery);
+	snprintf(percentage, 6, "%d%%", battery);
 	
 	return percentage;
 }
@@ -48,110 +48,110 @@ char * getBatteryPercentage()
 	return batteryElec;
 }*/
 
-char * getUsingWireless()
+char * getUsingWireless(SceVoid)
 {
 	static char usingWireless[10];
 	
 	int wireless = scePowerGetUsingWireless();
 	
-	sprintf(usingWireless, "%d", wireless);
+	snprintf(usingWireless, 10, "%d", wireless);
 	
 	return usingWireless;
 }
 
-char * getBatterySOH()
+char * getBatterySOH(SceVoid)
 {
-	static char SOH[10];
+	static char SOH[6];
 	
 	int batterySOH = scePowerGetBatterySOH();
 	
-	sprintf(SOH, "%d%%", batterySOH);
+	snprintf(SOH, 6, "%d%%", batterySOH);
 	
 	return SOH;
 }
 
-char * getBatteryCycleCount()
+char * getBatteryCycleCount(SceVoid)
 {
-	static char count[10];
+	static char count[6];
 	
 	int cycleCount = scePowerGetBatteryCycleCount();
 	
-	sprintf(count, "%d", cycleCount);
+	snprintf(count, 6, "%d", cycleCount);
 	
 	return count;
 }
 
-char * getBatteryCapacity()
+char * getBatteryCapacity(SceVoid)
 {
 	static char capacity[10];
 	
 	int fullCapacity = scePowerGetBatteryFullCapacity();
 	
-	sprintf(capacity, "%i mAh", fullCapacity);
+	snprintf(capacity, 10, "%i mAh", fullCapacity);
 	
 	return capacity;
 }
 
-char * getBatteryRemainCapacity()
+char * getBatteryRemainCapacity(SceVoid)
 {
 	static char capacity[10];
 	
 	int remainCapacity = scePowerGetBatteryRemainCapacity();
 	
-	sprintf(capacity, "%i mAh", remainCapacity);
+	snprintf(capacity, 10, "%i mAh", remainCapacity);
 	
 	return capacity;
 }
 
-char * getBatteryTemp(int type) 
+char * getBatteryTemp(SceInt type) 
 {
-	static char c[10];
-	sprintf(c, "%0.1f", ((float)scePowerGetBatteryTemp()) / 100);
+	static char c[7];
+	snprintf(c, 7, "%0.1f", ((SceFloat)scePowerGetBatteryTemp()) / 100.0);
 	
-	static char f[10];
-	sprintf(f, "%0.1f", ((1.8 * (float)scePowerGetBatteryTemp()) / 100) + 32);
+	static char f[8];
+	snprintf(f, 8, "%0.1f", ((1.8 * (SceFloat)scePowerGetBatteryTemp()) / 100.0) + 32.0);
 	
 	if (type == 0)
 		return c;
-	else
-		return f;
+	
+	return f;
 }
 
-char * getBatteryVoltage() 
+char * getBatteryVoltage(SceVoid) 
 {
-	static char volts[10];
+	static char volts[6];
 	
-	sprintf(volts, "%0.1f" , (((float)scePowerGetBatteryVolt()) / 1000));
+	snprintf(volts, 6, "%0.1f" , (((SceFloat)scePowerGetBatteryVolt()) / 1000.0));
 	
 	return volts;
 }
 
-char * getUdcdCableState()
+char * getUdcdCableState(SceVoid)
 {
-	static char udcdState[20];
+	static char udcdState[19];
 	SceUdcdDeviceState state;
 	sceUdcdGetDeviceState(&state);
 
 	if (state.cable & SCE_UDCD_STATUS_CABLE_CONNECTED)
-		sprintf(udcdState, "Cable connected");
+		snprintf(udcdState, 16, "Cable connected");
 	else if (state.cable & SCE_UDCD_STATUS_CABLE_DISCONNECTED)
-		sprintf(udcdState, "Cable disconnected");
+		snprintf(udcdState, 19, "Cable disconnected");
 	
 	return udcdState;
 }
 
-char * getUsbChargingState() //USB power supply is system settings
+char * getUsbChargingState(SceVoid) // USB power supply is system settings
 {
-	static char usbChargeState[20];
+	static char usbChargeState[21];
 	SceUdcdDeviceState state;
 	sceUdcdGetDeviceState(&state);
 	
-	int usbChargeEnable = regMgrGetInt("/CONFIG/USB/", "usb_charge_enable");
+	SceInt usbChargeEnable = regMgrGetInt("/CONFIG/USB/", "usb_charge_enable");
 
 	if (usbChargeEnable == 1)
-		sprintf(usbChargeState, "USB charging enabled");
+		snprintf(usbChargeState, 21, "USB charging enabled");
 	else 
-		sprintf(usbChargeState, "USB charging disabled");
+		snprintf(usbChargeState, 21, "USB charging disabled");
 	
 	return usbChargeState;
 }

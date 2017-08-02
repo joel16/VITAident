@@ -1,12 +1,12 @@
 #ifndef _VITAIDENT_KERNEL_H_
 #define _VITAIDENT_KERNEL_H_
 
+#include <psp2/kernel/modulemgr.h>
+#include <psp2/kernel/openpsid.h>
 #include <psp2/kernel/processmgr.h>
 #include <psp2/kernel/sysmem.h>
-#include <psp2/kernel/openpsid.h>
 
 #include <stdio.h>
-#include <stdbool.h>
 #include <string.h>
 
 #define isPCHX000 ((vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
@@ -14,45 +14,31 @@
 #define isPDEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsTool()))
 #define isPTEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
 
-typedef struct {
-	SceUInt size;
-	SceChar8 version_string[28];
-	SceUInt version_value;
-	SceUInt unk;
-} SceSystemSwVersionParam;
+SceInt _vshSblAimgrGetConsoleId(char CID[32]);
+SceInt _vshAppMgrCloudDataGetMcId(char mCID[32]);
 
-int sceKernelGetSystemSwVersion(SceSystemSwVersionParam *param);
+SceInt vshSblAimgrIsCEX(SceVoid);
+SceInt vshSblAimgrIsDEX(SceVoid);
+SceInt vshSblAimgrIsGenuineVITA(SceVoid);
+SceInt vshSblAimgrIsGenuineDolce(SceVoid);
+SceInt vshSblAimgrIsTest(SceVoid);
+SceInt vshSblAimgrIsTool(SceVoid);
 
-int _vshSblAimgrGetConsoleId(char CID[32]);
-int _vshAppMgrCloudDataGetMcId(char mCID[32]);
+SceInt vshSysconIsIduMode(SceVoid);
+SceInt vshSysconIsShowMode(SceVoid);
+SceInt vshSysconHasWWAN(SceVoid);
 
-int vshSblAimgrIsCEX();
-int vshSblAimgrIsDEX();
-int vshSblAimgrIsGenuineVITA();
-int vshSblAimgrIsGenuineDolce();
-int vshSblAimgrIsTest();
-int vshSblAimgrIsTool();
+SceInt vshRemovableMemoryGetCardInsertState(SceVoid);
 
-/*int ksceSysrootIsExternalBootMode();
-int ksceSysrootIsManufacturingMode();
-int ksceSysrootIsSafeMode();
-int ksceSysrootIsUpdateMode();*/
-
-int vshSysconIsIduMode();
-int vshSysconIsShowMode();
-int vshSysconHasWWAN();
-
-int vshRemovableMemoryGetCardInsertState();
-
-char * getFwVersion(bool spoofed);
-char getHenkakuVersion();
-int getModel();
-char * getCID();
-char * getmCID();
-SceKernelOpenPsId getPSID();
-char * getUnit();
-const char * getDeviceModel();
-const char * getBoard();
-const char * getSysrootKernelModes(int data);
+char * getFwVersion(SceBool spoofed);
+char getHenkakuVersion(SceVoid);
+SceInt getModel(SceVoid);
+char * getCID(SceVoid);
+char * getmCID(SceVoid);
+SceKernelOpenPsId getPSID(SceVoid);
+char * getUnit(SceVoid);
+const char * getDeviceModel(SceVoid);
+const char * getBoard(SceVoid);
+const char * getSysrootKernelModes(SceInt data);
 
 #endif

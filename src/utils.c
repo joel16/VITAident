@@ -1,34 +1,33 @@
-#include "graphics.h"
 #include "utils.h"
 
-int getVolume()
+SceInt getVolume(SceVoid)
 {
-	int calculatedVolume = 0;
-	int volume = regMgrGetInt("/CONFIG/SOUND/", "main_volume");
+	SceInt volume = 0;
+	SceInt sceVolume = regMgrGetInt("/CONFIG/SOUND/", "main_volume");
 	
-	calculatedVolume = (volume * 3.33333333);
+	volume = (sceVolume * 3.33333333);
 	
-	if (calculatedVolume == 99)
-		calculatedVolume = 100;
+	if (volume == 99)
+		volume = 100;
 	
-	return calculatedVolume;
+	return volume;
 }
 
-int getBrightness()
+SceInt getBrightness(SceVoid)
 {
-	int calculatedBrightness = 0;
-	int brightness = regMgrGetInt("/CONFIG/DISPLAY/", "brightness");
+	SceInt brightness = 0;
+	SceInt sceBrightness = regMgrGetInt("/CONFIG/DISPLAY/", "brightness");
 	
-	calculatedBrightness = (brightness * 0.00152590219);
+	brightness = (sceBrightness * 0.00152590219);
 	
-	return calculatedBrightness;
+	return brightness;
 }
 
-int regMgrGetInt(const char * category, const char * name)
+SceInt regMgrGetInt(const char * category, const char * name)
 {
 	int value = -1;
 	
-	int ret = sceRegMgrGetKeyInt(category, name, &value);
+	SceInt ret = sceRegMgrGetKeyInt(category, name, &value);
 	
 	if (ret < 0)
 		return 0;
@@ -40,7 +39,7 @@ char * regMgrGetStr(const char* category, const char* name)
 {
 	static char str[256];
 	
-	int ret = sceRegMgrGetKeyStr(category, name, str, sizeof(str)); 
+	SceInt ret = sceRegMgrGetKeyStr(category, name, str, sizeof(str)); 
 	
 	if (ret < 0)
 		return NULL;
@@ -48,19 +47,19 @@ char * regMgrGetStr(const char* category, const char* name)
 		return str;
 }
 
-void setColor(Color color)
+SceVoid setColor(Color color)
 {
 	psvDebugScreenSetFgColor(color);
 }
 
-int printStr(bool printStar, Color color, char message[250], char *info, ...)
+SceInt printStr(SceBool printStar, Color color, char message[250], char * info, ...)
 {
 	char buf[512];
 
 	va_list opt;
 	va_start(opt, info);
 	
-	if (printStar == true)
+	if (printStar == SCE_TRUE)
 	{
 		setColor(color); 
 		printf("* "); 
@@ -70,20 +69,22 @@ int printStr(bool printStar, Color color, char message[250], char *info, ...)
 	printf("%s", message); 
 	
 	setColor(color); 
-	int ret = vsnprintf(buf, sizeof(buf), info, opt);
+	SceInt ret = vsnprintf(buf, sizeof(buf), info, opt);
 	printTextScreen(buf);
 	va_end(opt);
 	
 	return ret;
 }
 
-void getSizeString(char *string, uint64_t size) //Thanks TheOfficialFloW
+SceVoid getSizeString(char * string, SceULong64 size) //Thanks TheOfficialFloW
 {
 	double double_size = (double)size;
 
-	int i = 0;
-	static char *units[] = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
-	while (double_size >= 1024.0f) {
+	SceInt i = 0;
+	static char * units[] = { "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" };
+	
+	while (double_size >= 1024.0f) 
+	{
 		double_size /= 1024.0f;
 		i++;
 	}
@@ -91,9 +92,9 @@ void getSizeString(char *string, uint64_t size) //Thanks TheOfficialFloW
 	sprintf(string, "%.*f %s", (i == 0) ? 0 : 2, double_size, units[i]);
 }
 
-const char * concat(char* s1, char* s2)
+const char * concat(char * s1, char * s2)
 {
-    char *ns = malloc(strlen(s1) + strlen(s2) + 1);
+    char * ns = malloc(strlen(s1) + strlen(s2) + 1);
     ns[0] = '\0';
     strcat(ns, s1);
     strcat(ns, s2);
