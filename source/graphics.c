@@ -1,13 +1,8 @@
-#include "graphics.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
 
-#define SCE_DISPLAY_UPDATETIMING_NEXTVSYNC SCE_DISPLAY_SETBUF_NEXTFRAME
-#include <psp2/display.h>
-#include <psp2/kernel/sysmem.h>
-#include <psp2/kernel/threadmgr.h>
+#include "graphics.h"
 
 enum {
 	SCREEN_WIDTH = 960,
@@ -19,7 +14,7 @@ enum {
 
 typedef union
 {
-	int rgba;
+	SceInt rgba;
 	struct
 	{
 		char r;
@@ -29,10 +24,10 @@ typedef union
 	} c;
 } color_t;
 
-extern u8 msx[];
+extern SceUChar8 msx[];
 void* g_vram_base;
-static int gX = 0;
-static int gY = 0;
+static SceInt gX = 0;
+static SceInt gY = 0;
 
 static Color g_fg_color;
 static Color g_bg_color;
@@ -47,22 +42,22 @@ void *psvDebugScreenGetVram() {
 	return g_vram_base;
 }
 
-int psvDebugScreenGetX() {
+SceInt psvDebugScreenGetX() {
 	return gX;
 }
 
-int psvDebugScreenGetY() {
+SceInt psvDebugScreenGetY() {
 	return gY;
 }
 
-void psvDebugScreenSetXY(int x, int y) {
+void psvDebugScreenSetXY(SceInt x, SceInt y) {
 	gX = x;
 	gY = y;
 }
 
  // #define LOG(args...)  		vita_logf (__FILE__, __LINE__, args)  ///< Write a log entry
 
-int g_log_mutex;
+SceInt g_log_mutex;
 
 void psvDebugScreenInit() {
 	g_log_mutex = sceKernelCreateMutex("log_mutex", 0, 0, NULL);
@@ -87,18 +82,17 @@ void psvDebugScreenInit() {
 
 	g_vram_base = base;
 
-	sceDisplaySetFrameBuf(&framebuf, SCE_DISPLAY_UPDATETIMING_NEXTVSYNC);
+	sceDisplaySetFrameBuf(&framebuf, SCE_DISPLAY_SETBUF_NEXTFRAME);
 
 	g_fg_color = 0xFFFFFFFF;
 	g_bg_color = 0x00000000;
 }
 
-void psvDebugScreenClear(int bg_color)
+void psvDebugScreenClear(SceInt bg_color)
 {
 	gX = gY = 0;
-	int i;
 	color_t *pixel = (color_t *)getVramDisplayBuffer();
-	for(i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
+	for(SceInt i = 0; i < SCREEN_WIDTH * SCREEN_HEIGHT; i++) {
 		pixel->rgba = bg_color;
 		pixel++;
 	}
@@ -106,8 +100,8 @@ void psvDebugScreenClear(int bg_color)
 
 void printTextScreen(const char * text)
 {
-	int c, i, j, l;
-	u8 *font;
+	SceInt c, i, j, l;
+	SceUChar8 *font;
 	Color *vram_ptr;
 	Color *vram;
 
@@ -132,20 +126,20 @@ void printTextScreen(const char * text)
 
 		vram = getVramDisplayBuffer() + gX + gY * LINE_SIZE;
 
-		font = &msx[ (int)ch * 8];
+		font = &msx[ (SceInt)ch * 8];
 		for (i = l = 0; i < 8; i++, l += 8, font++) {
 			vram_ptr  = vram;
 			for (j = 0; j < 8; j++) {
 				if ((*font & (128 >> j))) {
-					*(uint32_t *)(vram_ptr) = g_fg_color;
-					*(uint32_t *)(vram_ptr + 1) = g_fg_color;
-					*(uint32_t *)(vram_ptr + LINE_SIZE) = g_fg_color;
-					*(uint32_t *)(vram_ptr + LINE_SIZE + 1) = g_fg_color;
+					*(SceUInt32 *)(vram_ptr) = g_fg_color;
+					*(SceUInt32 *)(vram_ptr + 1) = g_fg_color;
+					*(SceUInt32 *)(vram_ptr + LINE_SIZE) = g_fg_color;
+					*(SceUInt32 *)(vram_ptr + LINE_SIZE + 1) = g_fg_color;
 				} else {
-					*(uint32_t *)(vram_ptr) = g_bg_color;
-					*(uint32_t *)(vram_ptr + 1) = g_bg_color;
-					*(uint32_t *)(vram_ptr + LINE_SIZE) = g_bg_color;
-					*(uint32_t *)(vram_ptr + LINE_SIZE + 1) = g_bg_color;
+					*(SceUInt32 *)(vram_ptr) = g_bg_color;
+					*(SceUInt32 *)(vram_ptr + 1) = g_bg_color;
+					*(SceUInt32 *)(vram_ptr + LINE_SIZE) = g_bg_color;
+					*(SceUInt32 *)(vram_ptr + LINE_SIZE + 1) = g_bg_color;
 				}
 				vram_ptr += 2;
 			}

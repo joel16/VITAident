@@ -1,11 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdarg.h>
+
 #include "utils.h"
 
 SceInt getVolume(SceVoid)
 {
 	SceInt volume = 0;
-	SceInt sceVolume = regMgrGetInt("/CONFIG/SOUND/", "main_volume");
+	SceInt regVolume = regMgrGetInt("/CONFIG/SOUND/", "main_volume");
 	
-	volume = (sceVolume * 3.33333333);
+	volume = (regVolume * 3.33333333);
 	
 	if (volume == 99)
 		volume = 100;
@@ -16,35 +21,31 @@ SceInt getVolume(SceVoid)
 SceInt getBrightness(SceVoid)
 {
 	SceInt brightness = 0;
-	SceInt sceBrightness = regMgrGetInt("/CONFIG/DISPLAY/", "brightness");
+	SceInt regBrightness = regMgrGetInt("/CONFIG/DISPLAY/", "brightness");
 	
-	brightness = (sceBrightness * 0.00152590219);
+	brightness = (regBrightness * 0.00152590219);
 	
 	return brightness;
 }
 
 SceInt regMgrGetInt(const char * category, const char * name)
 {
-	int value = -1;
+	int value = 0;
 	
-	SceInt ret = sceRegMgrGetKeyInt(category, name, &value);
-	
-	if (ret < 0)
-		return 0;
-	else
+	if (R_SUCCEEDED(sceRegMgrGetKeyInt(category, name, &value)))
 		return value;
+	
+	return 0;
 }
 
 char * regMgrGetStr(const char* category, const char* name)
 {
 	static char str[256];
 	
-	SceInt ret = sceRegMgrGetKeyStr(category, name, str, sizeof(str)); 
-	
-	if (ret < 0)
-		return NULL;
-	else
+	if (R_SUCCEEDED(sceRegMgrGetKeyStr(category, name, str, sizeof(str))))
 		return str;
+	
+	return NULL;
 }
 
 SceVoid setColor(Color color)
@@ -59,7 +60,7 @@ SceInt printStr(SceBool printStar, Color color, char message[250], char * info, 
 	va_list opt;
 	va_start(opt, info);
 	
-	if (printStar == SCE_TRUE)
+	if (printStar) // SCE_TRUE
 	{
 		setColor(color); 
 		printf("* "); 

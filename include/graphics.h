@@ -1,19 +1,19 @@
 #ifndef GRAPHICS_H
 #define GRAPHICS_H
 
+#include <vitasdk.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef unsigned char u8;
-typedef unsigned u32;
-typedef u32 Color;
+typedef SceUInt32 Color;
 
 // allocates memory for framebuffer and initializes it
 void psvDebugScreenInit();
 
 // clears screen with a given color
-void psvDebugScreenClear(int bg_color);
+void psvDebugScreenClear(SceInt bg_color);
 
 void printTextScreen(const char * text);
 
@@ -27,8 +27,8 @@ Color psvDebugScreenSetFgColor(Color color);
 Color psvDebugScreenSetBgColor(Color color);
 
 void *psvDebugScreenGetVram();
-int psvDebugScreenGetX();
-int psvDebugScreenGetY();
+SceInt psvDebugScreenGetX();
+SceInt psvDebugScreenGetY();
 void psvDebugScreenSetXY();
 
 enum {
@@ -48,4 +48,3 @@ enum {
 #endif
 
 #endif /* GRAPHICS_H */
-

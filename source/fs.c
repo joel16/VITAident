@@ -1,43 +1,46 @@
+#include <string.h>
+
 #include "fs.h"
 #include "utils.h"
 
-SceInt fileExists(const char * path)
+SceBool fileExists(const char * path)
 {
-	SceUID file = sceIoOpen(path, SCE_O_RDONLY, 0777);
+	SceUID file = 0;
 	
-	if (file >= 0)
+	if (R_SUCCEEDED(file = sceIoOpen(path, SCE_O_RDONLY, 0777)))
 	{
 		sceIoClose(file);
-		return 1;
+		return SCE_TRUE;
 	}
 	
-	return 0;
+	return SCE_FALSE;
 }
 
-SceInt dirExists(const char * path)
-{
-	SceUID dir = sceIoDopen(path);
+SceBool dirExists(const char * path)
+{	
+	SceUID dir = 0;
 	
-	if (dir >= 0)
+	if (R_SUCCEEDED(dir = sceIoDopen(path)))
 	{
 		sceIoDclose(dir);
-		return 1;
+		return SCE_TRUE;
 	}
 	
-	return 0;
+	return SCE_FALSE;
 }
 
 SceInt writeFile(char * file, SceVoid * buf, SceInt size) 
 {
-	SceUID fd = sceIoOpen(file, SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777);
+	SceUID fd = 0;
 	
-	if (fd < 0)
-		return fd;
-
-	SceInt written = sceIoWrite(fd, buf, size);
-	sceIoClose(fd);
-	
-	return written;
+	if (R_SUCCEEDED(sceIoOpen(file, SCE_O_WRONLY | SCE_O_CREAT | SCE_O_TRUNC, 0777)))
+	{
+		SceInt written = sceIoWrite(fd, buf, size);
+		sceIoClose(fd);
+		return written;
+	}
+		
+	return fd;
 }
 
 SceOff getPartitionInfo(SceInt storage, const char * partition)
@@ -48,13 +51,12 @@ SceOff getPartitionInfo(SceInt storage, const char * partition)
 	SceIoStat stat;
 	memset(&stat, 0, sizeof(SceIoStat));
 	
-	if (sceIoGetstat(partition, &stat) >= 0) 
+	if (R_SUCCEEDED(sceIoGetstat(partition, &stat))) 
 	{		
 		SceIoDevInfo info;
 		memset(&info, 0, sizeof(SceIoDevInfo));
-		SceInt res = sceIoDevctl(partition, 0x3001, 0, 0, &info, sizeof(SceIoDevInfo));
 		
-		if (res >= 0) 
+		if (R_SUCCEEDED(sceIoDevctl(partition, 0x3001, 0, 0, &info, sizeof(SceIoDevInfo))))
 		{
 			freeSize = info.free_size;
 			maxSize = info.max_size;

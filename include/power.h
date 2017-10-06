@@ -1,11 +1,7 @@
 #ifndef _VITAIDENT_POWER_H_
 #define _VITAIDENT_POWER_H_
 
-#include <psp2/power.h>
-#include <psp2/udcd.h>
-
-#include <stdio.h>
-#include <string.h>
+#include <vitasdk.h>
 
 typedef enum 
 {
@@ -16,7 +12,6 @@ typedef enum
 } clockFrequencyType;
 
 //SceInt scePowerGetBatteryElec(SceVoid); Crashes the VITA
-SceInt scePowerGetUsingWireless(SceVoid);
 
 SceInt getClockFrequency(clockFrequencyType type);
 const char * getBatteryStatus(SceVoid);

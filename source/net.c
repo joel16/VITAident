@@ -1,11 +1,14 @@
+#include <stdio.h>
+
 #include "net.h"
+#include "utils.h"
 
 SceVoid initNet(SceVoid)
 {
 	if (sceSysmoduleIsLoaded(SCE_SYSMODULE_NET) != SCE_SYSMODULE_LOADED)
 		sceSysmoduleLoadModule(SCE_SYSMODULE_NET);
-	
-	static char memory[16 * 1024];
+		
+	static char memory[0x10 * 0x400];
 
 	SceNetInitParam param;
 	param.memory = memory;
@@ -25,25 +28,21 @@ SceVoid termNet(SceVoid)
 char * getMacAddress(SceVoid)
 {	
 	SceNetEtherAddr mac;
-	sceNetGetMacAddress(&mac, 0);
-
-	static char macAddress[32];
+	static char macAddress[0x12];
 	
-	snprintf(macAddress, 32, "%02X:%02X:%02X:%02X:%02X:%02X", mac.data[0], mac.data[1], mac.data[2], mac.data[3], mac.data[4], mac.data[5]);
+	if (R_SUCCEEDED(sceNetGetMacAddress(&mac, 0)))
+		snprintf(macAddress, 0x12, "%02X:%02X:%02X:%02X:%02X:%02X", mac.data[0], mac.data[1], mac.data[2], mac.data[3], mac.data[4], mac.data[5]);
 
 	return macAddress;
 }
 
 char * getIP(SceVoid)
 {
-	static char address[16];
-
 	SceNetCtlInfo info;
+	static char address[0x11];
 	
-	if (sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info) < 0) 
-		strcpy(address, "-");
-	else 
-		strcpy(address, info.ip_address);
+	if (R_SUCCEEDED(sceNetCtlInetGetInfo(SCE_NETCTL_INFO_GET_IP_ADDRESS, &info)))
+		snprintf(address, 0x11, info.ip_address);
 	
 	return address;
 }

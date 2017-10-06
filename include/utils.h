@@ -1,12 +1,13 @@
 #ifndef _VITAIDENT_UTILS_H_
 #define _VITAIDENT_UTILS_H_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdarg.h>
+#include <vitasdk.h>
 
-#include <psp2/registrymgr.h>
+/// Checks whether a result code indicates success.
+#define R_SUCCEEDED(res)   ((res)>=0)
+/// Checks whether a result code indicates failure.
+#define R_FAILED(res)      ((res)<0)
+/// Returns the level of a result code.
 
 #include "graphics.h"
 

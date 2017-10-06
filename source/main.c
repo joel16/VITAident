@@ -2,7 +2,6 @@
 #include "fs.h"
 #include "graphics.h"
 #include "kernel.h"
-#include "main.h"
 #include "net.h"
 #include "power.h"
 #include "utils.h"
@@ -96,21 +95,20 @@ int main(int argc, char *argv[])
 	
 	if (vshRemovableMemoryGetCardInsertState() == 1) //Memory card is inserted
 	{
-		printStr(SCE_TRUE, GREEN, "Memory card storage: ", "%s\n", getStorageInfo(0));
+		printStr(SCE_TRUE, GREEN, "Memory card storage: ", "%s\n", getStorageInfo("ux0:", 0));
 
-		printStr(SCE_TRUE, GREEN, "Memory card storage free: ", "%s\n", getStorageInfo(1));
+		printStr(SCE_TRUE, GREEN, "Memory card storage free: ", "%s\n", getStorageInfo("ux0:", 1));
+	}
+	else if ((!vshRemovableMemoryGetCardInsertState()) && ((strcmp(getVitaModel(), "1000") == 0) || (isVTE1000)))
+	{
+		printStr(SCE_TRUE, GREEN, "Internal storage: ", "%s\n", getStorageInfo("imc0:", 0));
+
+		printStr(SCE_TRUE, GREEN, "Internal storage free: ", "%s\n", getStorageInfo("imc0:", 1));
 	}
 	
-	char free_size_string[16], max_size_string[16];
-	SceOff freeSize = getPartitionInfo(0, "ur0:");
-	SceOff maxSize = getPartitionInfo(1, "ur0:");
-	
-	getSizeString(free_size_string, freeSize);
-	getSizeString(max_size_string, maxSize);
-	
-	printStr(SCE_TRUE, GREEN, "Internal storage: ", "%s\n", max_size_string);
+	printStr(SCE_TRUE, GREEN, "Internal storage: ", "%s\n", getStorageInfo("ur0:", 0));
 
-	printStr(SCE_TRUE, GREEN, "Internal storage free: ", "%s\n", free_size_string);
+	printStr(SCE_TRUE, GREEN, "Internal storage free: ", "%s\n", getStorageInfo("ur0:", 1));
 
 	printStr(SCE_FALSE, GREEN, "", "\n> Press any key to exit =)");
 	

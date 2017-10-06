@@ -4,63 +4,68 @@
 
 char * getFwVersion(SceBool spoofed)
 {
-	static char version[16];
-	unsigned char str[32] = "";
+	static char version[0x10];
+	unsigned char str[0x20] = "";
 	
-	if (spoofed == SCE_TRUE)
+	if (spoofed)
 	{
 		SceKernelFwInfo info;
 		info.size = sizeof(SceKernelFwInfo);
-		sceKernelGetSystemSwVersion(&info);
-	
-		snprintf(version, 16, "%s", info.versionString);
+		
+		if (R_SUCCEEDED(sceKernelGetSystemSwVersion(&info)))
+			snprintf(version, 0x10, "%s", info.versionString);
 		
 		return version;
 	}
 	
 	SceUID file = sceIoOpen("os0:psp2bootconfig.skprx", SCE_O_RDONLY, 0777);
 	
-	if(file < 0)
+	if (R_FAILED(file))
 		return "Unknown firmware";
 	
-	sceIoLseek(file, 146, SCE_SEEK_SET);
-	sceIoRead(file, &str, 8);
+	sceIoLseek(file, 0x92, SCE_SEEK_SET);
+	sceIoRead(file, &str, 0x8);
 	sceIoClose(file);
 		
-	snprintf(version, 8, "%x.%02x", str[3], str[2]);
+	snprintf(version, 0x8, "%x.%02x", str[0x3], str[0x2]);
 	
 	return version;
 }
 
 char getHenkakuVersion(SceVoid)
 {
-	char henkakuVersion[10];
+	char henkakuVersion[0xA];
 	
 	SceKernelFwInfo info;
 	info.size = sizeof(SceKernelFwInfo);
-	sceKernelGetSystemSwVersion(&info);
 	
-	strcpy(henkakuVersion, (char *)info.versionString);
+	if (R_SUCCEEDED(sceKernelGetSystemSwVersion(&info)))
+		strcpy(henkakuVersion, (char *)info.versionString);
 	
 	return henkakuVersion[(strlen(henkakuVersion) - 1)];
 }
 
 SceInt getModel(SceVoid)
 {
-	return sceKernelGetModelForCDialog();
+	SceInt model = 0;
+	
+	if (R_SUCCEEDED(model = sceKernelGetModelForCDialog()))
+		return model;
+	
+	return 0;
 }
 
 char * getCID(SceVoid)
 {
-	char CID[32];
-	static char idps[32];
+	char CID[0x20];
+	static char idps[0x20];
 	
 	// Get IDPS
-	_vshSblAimgrGetConsoleId(CID);
-	
-	SceInt i = 0;
-	for (i = 0; i < 16; i++)
-		snprintf(idps + (i * 2), (32) - (i * 2) + 1, "%02X", CID[i]);
+	if (R_SUCCEEDED(_vshSblAimgrGetConsoleId(CID)))
+	{
+		for (SceInt i = 0; i < 0x10; i++)
+			snprintf(idps + (i * 0x2), (0x20) - (i * 0x2) + 0x1, "%02X", CID[i]);
+	}
 	
 	return idps;
 }
@@ -109,7 +114,7 @@ const char * getBoard(SceVoid)
 		return "USS-1001";
 	else if ((isPCHX000) && (strcmp(getVitaModel(), "1000") == 0))
 		return "IRS-002";
-	else if(isVTE1000)
+	else if (isVTE1000)
 		return "DOL-1001";
 	else if (isPDEL)
 		return "IRT-002";
