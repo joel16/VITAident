@@ -24,7 +24,7 @@ typedef union
 	} c;
 } color_t;
 
-extern SceUChar8 msx[];
+extern SceUChar8 psvDebugScreenFont[];
 void* g_vram_base;
 static SceInt gX = 0;
 static SceInt gY = 0;
@@ -126,7 +126,7 @@ void printTextScreen(const char * text)
 
 		vram = getVramDisplayBuffer() + gX + gY * LINE_SIZE;
 
-		font = &msx[ (SceInt)ch * 8];
+		font = &psvDebugScreenFont[(SceInt)ch * 8];
 		for (i = l = 0; i < 8; i++, l += 8, font++) {
 			vram_ptr  = vram;
 			for (j = 0; j < 8; j++) {

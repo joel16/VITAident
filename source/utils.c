@@ -5,19 +5,6 @@
 
 #include "utils.h"
 
-SceInt getVolume(SceVoid)
-{
-	SceInt volume = 0;
-	SceInt regVolume = regMgrGetInt("/CONFIG/SOUND/", "main_volume");
-	
-	volume = (regVolume * 3.33333333);
-	
-	if (volume == 99)
-		volume = 100;
-	
-	return volume;
-}
-
 SceInt getBrightness(SceVoid)
 {
 	SceInt brightness = 0;

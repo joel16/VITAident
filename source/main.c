@@ -91,7 +91,10 @@ int main(int argc, char *argv[])
 	printStr(SCE_TRUE, GREEN, "Enter button: ", "%s\n", getEnterButton()? "Cross (X)" : "Circle (O)");
 	
 	printStr(SCE_TRUE, GREEN, "Brightness: ", "%d%%\n",  getBrightness());
-	printStr(SCE_TRUE, GREEN, "Volume: ", "%d%%\n",  getVolume());
+
+	int volume = 0;
+	if (R_SUCCEEDED(sceAVConfigGetSystemVol(&volume)))
+		printStr(SCE_TRUE, GREEN, "Volume: ", "%d\n",  volume);
 	
 	if (vshRemovableMemoryGetCardInsertState() == 1) //Memory card is inserted
 	{

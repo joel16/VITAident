@@ -44,6 +44,7 @@ target_link_libraries(${SHORT_NAME}
 	c
 	SceAppMgr_stub
 	SceAppUtil_stub
+	SceAVConfig_stub
 	SceBtForDriver_stub
 	SceCommonDialog_stub
 	SceCompat_stub

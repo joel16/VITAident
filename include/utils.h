@@ -15,8 +15,7 @@
 
 #define SCE_CTRL_ANY_KEY (SCE_CTRL_SELECT | SCE_CTRL_L3 | SCE_CTRL_R3 | SCE_CTRL_START | SCE_CTRL_UP | SCE_CTRL_RIGHT | SCE_CTRL_DOWN | SCE_CTRL_LEFT | \
 		SCE_CTRL_LTRIGGER | SCE_CTRL_RTRIGGER | SCE_CTRL_L1 | SCE_CTRL_R1 | SCE_CTRL_TRIANGLE | SCE_CTRL_CIRCLE | SCE_CTRL_CROSS | SCE_CTRL_SQUARE)
-	
-SceInt getVolume(SceVoid);
+
 SceInt getBrightness(SceVoid);
 SceInt regMgrGetInt(const char * category, const char * name);
 char * regMgrGetStr(const char * category, const char * name);
