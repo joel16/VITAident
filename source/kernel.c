@@ -7,29 +7,26 @@ char * getFwVersion(SceBool spoofed)
 	static char version[0x10];
 	unsigned char str[0x20] = "";
 	
+	SceKernelFwInfo info;
+	info.size = sizeof(SceKernelFwInfo);
+	
+	// Get the spoofed version
 	if (spoofed)
-	{
-		SceKernelFwInfo info;
-		info.size = sizeof(SceKernelFwInfo);
-		
+	{	
 		if (R_SUCCEEDED(sceKernelGetSystemSwVersion(&info)))
 			snprintf(version, 0x10, "%s", info.versionString);
 		
 		return version;
 	}
 	
-	SceUID file = sceIoOpen("os0:psp2bootconfig.skprx", SCE_O_RDONLY, 0777);
+	// Get the actual version
+	if (R_SUCCEEDED(_vshSblGetSystemSwVersion(&info)))
+	{
+		snprintf(version, 0x10, "%s", info.versionString);
+		return version;
+	}
 	
-	if (R_FAILED(file))
-		return "Unknown firmware";
-	
-	sceIoLseek(file, 0x92, SCE_SEEK_SET);
-	sceIoRead(file, &str, 0x8);
-	sceIoClose(file);
-		
-	snprintf(version, 0x8, "%x.%02x", str[0x3], str[0x2]);
-	
-	return version;
+	return NULL;
 }
 
 char getHenkakuVersion(SceVoid)

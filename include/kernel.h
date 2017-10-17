@@ -14,6 +14,9 @@
 #define isPDEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsTool()))
 #define isPTEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
 
+SceInt32 ksceSysconGetBaryonVersion(SceInt32 * baryonVersion);
+SceInt _vshSblGetSystemSwVersion(SceKernelFwInfo * data);
+
 SceInt _vshSblAimgrGetConsoleId(char CID[32]);
 SceInt _vshAppMgrCloudDataGetMcId(char mCID[32]);
 
