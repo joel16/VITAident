@@ -1,7 +1,7 @@
 /*
  * PSP Software Development Kit - http://www.pspdev.org
  * -----------------------------------------------------------------------
- * Licensed under the BSD license, see LICENSE in PSPSDK for details.
+ * Licensed under the BSD license, see LICENSE in PSPSDK root for details.
  *
  * font.c - Debug Font.
  *
@@ -141,3 +141,6 @@ unsigned char psvDebugScreenFont[]=
 "\x00\x00\x00\x00\x30\x00\x00\x00\x3e\x20\x20\x20\xa0\x60\x20\x00"
 "\xa0\x50\x50\x50\x00\x00\x00\x00\x40\xa0\x20\x40\xe0\x00\x00\x00"
 "\x00\x38\x38\x38\x38\x38\x38\x00\x00\x00\x00\x00\x00\x00\x00";
+
+
+

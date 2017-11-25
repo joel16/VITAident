@@ -25,9 +25,7 @@ include_directories(
 
 add_executable(${SHORT_NAME}
 	source/app.c
-	source/font.c
 	source/fs.c
-	source/graphics.c
 	source/kernel.c
 	source/main.c
 	source/net.c

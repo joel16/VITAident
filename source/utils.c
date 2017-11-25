@@ -35,35 +35,6 @@ char * regMgrGetStr(const char* category, const char* name)
 	return NULL;
 }
 
-SceVoid setColor(Color color)
-{
-	psvDebugScreenSetFgColor(color);
-}
-
-SceInt printStr(SceBool printStar, Color color, char message[250], char * info, ...)
-{
-	char buf[512];
-
-	va_list opt;
-	va_start(opt, info);
-	
-	if (printStar) // SCE_TRUE
-	{
-		setColor(color); 
-		printf("* "); 
-	}
-	
-	setColor(WHITE); 
-	printf("%s", message); 
-	
-	setColor(color); 
-	SceInt ret = vsnprintf(buf, sizeof(buf), info, opt);
-	printTextScreen(buf);
-	va_end(opt);
-	
-	return ret;
-}
-
 SceVoid getSizeString(char * string, SceULong64 size) //Thanks TheOfficialFloW
 {
 	double double_size = (double)size;
