@@ -14,24 +14,7 @@
 #define isPDEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsTool()))
 #define isPTEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
 
-SceInt32 ksceSysconGetBaryonVersion(SceInt32 * baryonVersion);
-SceInt _vshSblGetSystemSwVersion(SceKernelFwInfo * data);
-
-SceInt _vshSblAimgrGetConsoleId(char CID[32]);
-SceInt _vshAppMgrCloudDataGetMcId(char mCID[32]);
-
-SceInt vshSblAimgrIsCEX(SceVoid);
-SceInt vshSblAimgrIsDEX(SceVoid);
-SceInt vshSblAimgrIsGenuineVITA(SceVoid);
-SceInt vshSblAimgrIsGenuineDolce(SceVoid);
-SceInt vshSblAimgrIsTest(SceVoid);
-SceInt vshSblAimgrIsTool(SceVoid);
-
-SceInt vshSysconIsIduMode(SceVoid);
-SceInt vshSysconIsShowMode(SceVoid);
-SceInt vshSysconHasWWAN(SceVoid);
-
-SceInt vshRemovableMemoryGetCardInsertState(SceVoid);
+// SceInt32 ksceSysconGetBaryonVersion(SceInt32 * baryonVersion);
 
 char * getFwVersion(SceBool spoofed);
 char getHenkakuVersion(SceVoid);
