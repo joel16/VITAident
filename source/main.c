@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	
 	
 		/*Battery Info*/
-		if (!(getModel() == 0x00020000))//if its a PS Vita TV this info is uselsss.
+		if ((getModel() != 0x00020000))//if its a PS Vita TV this info is uselsss.
 		{
 			printStr(SCE_TRUE, COLOR_BLUE, POS("2", "18")"Battery percentage: ", "%s ", getBatteryPercentage());
 			printStr(SCE_FALSE, COLOR_BLUE, "(", "%s", getBatteryStatus());
@@ -74,28 +74,44 @@ int main(int argc, char *argv[])
 		}
 	
 		/* Misc info */
-		printStr(SCE_TRUE, COLOR_GREEN, POS("2", "25")"Enter button: ", "%s     \n", getEnterButton()? "Cross (X)" : "Circle (O)");
-		printStr(SCE_TRUE, COLOR_GREEN, POS("2", "26")"Brightness: ", "%d%%     \n",  getBrightness());
+		(getModel() == 0x00020000)? printf(POS("2", "18")) : printf(POS("2", "25"));
+		printStr(SCE_TRUE, COLOR_GREEN, "Enter button: ", "%s     \n", getEnterButton()? "Cross (X)" : "Circle (O)");
+		
+		(getModel() == 0x00020000)? printf(POS("2", "19")) : printf(POS("2", "26"));
+		printStr(SCE_TRUE, COLOR_GREEN, "Brightness: ", "%d%%     \n",  getBrightness());
 
 		int volume = 0;
 		if (R_SUCCEEDED(sceAVConfigGetSystemVol(&volume)))
-			printStr(SCE_TRUE, COLOR_GREEN, POS("2", "27")"Volume: ", "%d     \n",  volume);
+		{
+			(getModel() == 0x00020000)? printf(POS("2", "20")) : printf(POS("2", "27"));
+			printStr(SCE_TRUE, COLOR_GREEN, "Volume: ", "%d     \n",  volume);
+		}
 	
 		if (vshRemovableMemoryGetCardInsertState() == 1) //Memory card is inserted
 		{
-			printStr(SCE_TRUE, COLOR_GREEN, POS("2", "28")"Memory card storage: ", "%s     \n", getStorageInfo("ux0:", 0));
-			printStr(SCE_TRUE, COLOR_GREEN, POS("2", "29")"Memory card storage free: ", "%s     \n", getStorageInfo("ux0:", 1));
+			(getModel() == 0x00020000)? printf(POS("2", "21")) : printf(POS("2", "28"));
+			printStr(SCE_TRUE, COLOR_GREEN, "Memory card storage: ", "%s     \n", getStorageInfo("ux0:", 0));
+			
+			(getModel() == 0x00020000)? printf(POS("2", "22")) : printf(POS("2", "29"));
+			printStr(SCE_TRUE, COLOR_GREEN, "Memory card storage free: ", "%s     \n", getStorageInfo("ux0:", 1));
 		}
 		else if ((!vshRemovableMemoryGetCardInsertState()) && ((strcmp(getVitaModel(), "1000") == 0) || (isVTE1000)))
 		{
-			printStr(SCE_TRUE, COLOR_GREEN, POS("2", "28")"Internal storage: ", "%s     \n", getStorageInfo("imc0:", 0));
-			printStr(SCE_TRUE, COLOR_GREEN, POS("2", "29")"Internal storage free: ", "%s     \n", getStorageInfo("imc0:", 1));
+			(getModel() == 0x00020000)? printf(POS("2", "21")) : printf(POS("2", "28"));
+			printStr(SCE_TRUE, COLOR_GREEN, "Internal storage: ", "%s     \n", getStorageInfo("imc0:", 0));
+			
+			(getModel() == 0x00020000)? printf(POS("2", "22")) : printf(POS("2", "29"));
+			printStr(SCE_TRUE, COLOR_GREEN, "Internal storage free: ", "%s     \n", getStorageInfo("imc0:", 1));
 		}
-	
-		printStr(SCE_TRUE, COLOR_GREEN, POS("2", "30")"Internal storage: ", "%s     \n", getStorageInfo("ur0:", 0));
-		printStr(SCE_TRUE, COLOR_GREEN, POS("2", "31")"Internal storage free: ", "%s     \n", getStorageInfo("ur0:", 1));
 		
-		printStr(SCE_FALSE, COLOR_GREEN, "", POS("0", "33")"Press any key to exit =)");
+		(getModel() == 0x00020000)? printf(POS("2", "23")) : printf(POS("2", "30"));
+		printStr(SCE_TRUE, COLOR_GREEN, "Internal storage: ", "%s     \n", getStorageInfo("ur0:", 0));
+		
+		(getModel() == 0x00020000)? printf(POS("2", "24")) : printf(POS("2", "31"));
+		printStr(SCE_TRUE, COLOR_GREEN, "Internal storage free: ", "%s     \n", getStorageInfo("ur0:", 1));
+		
+		(getModel() == 0x00020000)? printf(POS("0", "26")) : printf(POS("0", "32"));
+		printStr(SCE_FALSE, COLOR_GREEN, "", "\nPress any key to exit =)");
 	
 		sceCtrlPeekBufferPositive(0, &pad, 1);
 		

@@ -216,7 +216,7 @@ SceInt printStr(SceBool printStar, uint32_t color, char message[250], char * inf
 	if (printStar) // SCE_TRUE
 	{
 		psvDebugScreenSetFgColor(color); 
-		psvDebugScreenPrintf("* "); 
+		psvDebugScreenPrintf("* ");
 	}
 	
 	psvDebugScreenSetFgColor(COLOR_WHITE); 
