@@ -10,21 +10,26 @@
 #include <string.h>
 
 #define isPCHX000 ((vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
-#define isVTE1000 ((vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineDolce()))
+#define isVTE1000 ((vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (sceKernelIsPSVitaTV()))
 #define isPDEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTest()) && (!vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()) && (vshSblAimgrIsTool()))
 #define isPTEL ((!vshSblAimgrIsCEX()) && (!vshSblAimgrIsTool()) && (!vshSblAimgrIsTest()) && (vshSblAimgrIsDEX()) && (vshSblAimgrIsGenuineVITA()))
 
-// SceInt32 ksceSysconGetBaryonVersion(SceInt32 * baryonVersion);
+typedef struct PsCode 
+{
+	char magic[2];
+	char target_id[2];
+	char model_revision[2];
+	uint16_t chassis;
+} PsCode;
 
-char * getFwVersion(SceBool spoofed);
-char getHenkakuVersion(SceVoid);
-SceInt getModel(SceVoid);
-char * getCID(SceVoid);
-char * getmCID(SceVoid);
-SceKernelOpenPsId getPSID(SceVoid);
-char * getUnit(SceVoid);
-const char * getDeviceModel(SceVoid);
-const char * getBoard(SceVoid);
-const char * getSysrootKernelModes(SceInt data);
+SceInt _vshSblAimgrGetPscode(PsCode *code);
+
+char *Kernel_GetFirmwareVersion(SceBool spoofed);
+SceInt Kernel_GetModel(SceVoid);
+char *Kernel_GetCID(SceVoid);
+char *Kernel_GetPSID(SceVoid);
+char *Kernel_GetDeviceModel(SceVoid);
+char *Kernel_GetDeviceBoard(SceVoid);
+char *Kernel_GetDeviceUnit(SceVoid);
 
 #endif

@@ -4,7 +4,7 @@
 #include "app.h"
 #include "utils.h"
 
-SceInt initAppUtil(SceVoid)
+SceInt App_InitAppUtil(SceVoid)
 {
 	SceAppUtilInitParam init;
 	SceAppUtilBootParam boot;
@@ -19,7 +19,7 @@ SceInt initAppUtil(SceVoid)
 	return 0;
 }
 
-SceInt termAppUtil(SceVoid)
+SceInt App_TermAppUtil(SceVoid)
 {
 	SceInt ret = 0;
 	
@@ -29,7 +29,7 @@ SceInt termAppUtil(SceVoid)
 	return 0;
 }
 
-SceChar8 * getUser(SceVoid)
+SceChar8 *App_GetUser(SceVoid)
 {
 	static SceChar8 userName[SCE_SYSTEM_PARAM_USERNAME_MAXSIZE];
 	
@@ -39,9 +39,9 @@ SceChar8 * getUser(SceVoid)
 	return NULL;
 }
 
-const char * getLang(SceVoid)
+const char *App_GetLanguage(SceVoid)
 {
-	const char * languages[] = 
+	const char *languages[] = 
 	{
 		"Japanese",
 		"English US",
@@ -77,59 +77,59 @@ const char * getLang(SceVoid)
 	return NULL;
 }
 
-SceOff getMaxSize(const char * dev)
+SceOff App_GetTotalCapacity(const char *device)
 {
 	SceIoDevInfo info;
 	
-	if (R_SUCCEEDED(sceIoDevctl(dev, 0x3001, NULL, 0, &info, sizeof(SceIoDevInfo))))
+	if (R_SUCCEEDED(sceIoDevctl(device, 0x3001, NULL, 0, &info, sizeof(SceIoDevInfo))))
 		return info.max_size;
 	
 	return 0;
 }
 
-SceOff getFreeSize(const char * dev)
+static SceOff App_GetFreeCapacity(const char *device)
 {
 	SceIoDevInfo info;
 	
-	if (R_SUCCEEDED(sceIoDevctl(dev, 0x3001, NULL, 0, &info, sizeof(SceIoDevInfo))))
+	if (R_SUCCEEDED(sceIoDevctl(device, 0x3001, NULL, 0, &info, sizeof(SceIoDevInfo))))
 		return info.free_size;
 	
 	return 0;
 }
 
-SceOff getUsedSize(const char * dev)
+SceOff App_GetUsedCapacity(const char *device)
 {
 	SceIoDevInfo info;
 	
-	if (R_SUCCEEDED(sceIoDevctl(dev, 0x3001, NULL, 0, &info, sizeof(SceIoDevInfo))))
+	if (R_SUCCEEDED(sceIoDevctl(device, 0x3001, NULL, 0, &info, sizeof(SceIoDevInfo))))
 		return info.max_size - info.free_size;
 	
 	return 0;
 }
 
-char * getStorageInfo(const char * dev, SceInt type)
+char *App_GetStorageInfo(const char *device, SceInt type)
 {
 	static char size_string[0x10];
 
 	switch (type)
 	{
 		case 0: // Max size
-			getSizeString(size_string, getMaxSize(dev));
+			Utils_GetSizeString(size_string, App_GetTotalCapacity(device));
 			break;
 		
 		case 1: // Free size
-			getSizeString(size_string, getFreeSize(dev));
+			Utils_GetSizeString(size_string, App_GetFreeCapacity(device));
 			break;
 			
 		case 2: // Used size
-			getSizeString(size_string, getUsedSize(dev));
+			Utils_GetSizeString(size_string, App_GetUsedCapacity(device));
 			break;
 	}
 	
 	return size_string;
 }
 
-SceBool getEnterButton(SceVoid) // Circle = 0, cross = 1
+SceBool App_GetEnterButton(SceVoid)
 {
 	int enterButton = 0;
 	sceAppUtilSystemParamGetInt(SCE_SYSTEM_PARAM_ID_ENTER_BUTTON, &enterButton);

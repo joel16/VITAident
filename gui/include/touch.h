@@ -13,7 +13,7 @@
 
 #define lerp(value, from_max, to_max) ((((value * 10) * (to_max * 10)) / (from_max * 10)) / 10)
 
-#define touchInRect(x1, x2, y1, y2)  ((touchCheckIsPressed()) && (touchGetX() >= (x1) && touchGetX() <= (x2) && touchGetY() >= (y1) && touchGetY() <= (y2)))
+#define touchInRect(x1, x2, y1, y2)  ((Touch_CheckIsPressed()) && (Touch_GetX() >= (x1) && Touch_GetX() <= (x2) && Touch_GetY() >= (y1) && Touch_GetY() <= (y2)))
 
 SceTouchData touch;
 
@@ -26,17 +26,15 @@ typedef struct
 	int pressedPrev;
 	int released;
 	int releasedPrev;
-} touchStateData;
+} TouchStateData;
 
-touchStateData* touchState;
+SceInt Touch_Init();
 
-int initTouch();
-
-int touchGetX();
-int touchGetY();
-int touchCheckIsPressed();
-int touchCheckIsReleased();
-int touchCheckIsHeld();
-void touchUpdate();
+SceInt Touch_GetX(SceVoid);
+SceInt Touch_GetY(SceVoid);
+SceInt Touch_CheckIsPressed(SceVoid);
+SceInt Touch_CheckIsReleased(SceVoid);
+SceInt Touch_CheckIsHeld(SceVoid);
+SceVoid Touch_Update(SceVoid);
 
 #endif

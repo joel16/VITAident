@@ -3,12 +3,12 @@
 #include "net.h"
 #include "utils.h"
 
-SceVoid initNet(SceVoid)
+SceVoid Net_Init(SceVoid)
 {
 	if (sceSysmoduleIsLoaded(SCE_SYSMODULE_NET) != SCE_SYSMODULE_LOADED)
 		sceSysmoduleLoadModule(SCE_SYSMODULE_NET);
 		
-	static char memory[0x10 * 0x400];
+	static char memory[0x10 *0x400];
 
 	SceNetInitParam param;
 	param.memory = memory;
@@ -19,13 +19,13 @@ SceVoid initNet(SceVoid)
 	sceNetCtlInit();
 }
 
-SceVoid termNet(SceVoid)
+SceVoid Net_Term(SceVoid)
 {
 	sceNetCtlTerm();
 	sceNetTerm();
 }
 
-char * getMacAddress(SceVoid)
+char *Net_GetMacAddr(SceVoid)
 {	
 	SceNetEtherAddr mac;
 	static char macAddress[0x12];
@@ -36,7 +36,7 @@ char * getMacAddress(SceVoid)
 	return macAddress;
 }
 
-char * getIP(SceVoid)
+char *Net_GetIPAddr(SceVoid)
 {
 	SceNetCtlInfo info;
 	static char address[0x11];
