@@ -22,9 +22,12 @@ set(VITA_MKSFOEX_FLAGS "${VITA_MKSFOEX_FLAGS} -d PARENTAL_LEVEL=1")
 include_directories(
   common
   include
+  plugin
 )
 
 link_directories(
+  ${CMAKE_BINARY_DIR}/vitaident_kernel_stubs
+  ${CMAKE_BINARY_DIR}/vitaident_user_stubs
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
@@ -34,6 +37,8 @@ add_executable(${PROJECT_NAME}
   source/menus.c
   source/utils.c
 )
+
+add_dependencies(${PROJECT_NAME} vitaident_kernel.skprx)
 
 target_link_libraries(${PROJECT_NAME}
   vita2d
@@ -54,12 +59,66 @@ target_link_libraries(${PROJECT_NAME}
   SceShellSvc_stub
   SceSysmodule_stub
   SceVshBridge_stub
+  taihen_stub
+  vitaident_user_stub_weak
 )
 
 vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME} UNSAFE)
+
+add_executable(vitaident_kernel
+  plugin/kernel.c
+)
+
+set_target_properties(vitaident_kernel
+  PROPERTIES LINK_FLAGS
+  -nostdlib
+)
+
+target_link_libraries(vitaident_kernel
+  SceModulemgrForKernel_stub
+  SceSysmemForDriver_stub
+  SceSysrootForKernel_stub
+  taihenForKernel_stub
+)
+
+vita_create_self(vitaident_kernel.skprx vitaident_kernel
+  CONFIG ${CMAKE_SOURCE_DIR}/plugin/kernel_exports.yml
+  UNSAFE
+)
+
+vita_create_stubs(vitaident_kernel_stubs vitaident_kernel ${CMAKE_SOURCE_DIR}/plugin/kernel_exports.yml KERNEL)
+
+add_executable(vitaident_user
+  plugin/user.c
+)
+
+set_target_properties(vitaident_user
+  PROPERTIES LINK_FLAGS
+  -nostartfiles
+)
+
+target_link_libraries(vitaident_user
+  taihen_stub
+  vitaident_kernel_stub
+)
+
+vita_create_self(vitaident_user.suprx vitaident_user
+  CONFIG ${CMAKE_SOURCE_DIR}/plugin/user_exports.yml
+  UNSAFE
+)
+
+vita_create_stubs(vitaident_user_stubs vitaident_user ${CMAKE_SOURCE_DIR}/plugin/user_exports.yml)
+
+add_dependencies(vitaident_user vitaident_kernel_stubs)
+add_dependencies(${PROJECT_NAME} vitaident_kernel.skprx)
+add_dependencies(${PROJECT_NAME} vitaident_user_stubs)
+add_dependencies(${PROJECT_NAME} vitaident_user.suprx)
+
 vita_create_vpk(${PROJECT_NAME}.vpk ${VITA_TITLEID} ${PROJECT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
+  FILE ${CMAKE_BINARY_DIR}/vitaident_kernel.skprx vitaident_kernel.skprx
+  FILE ${CMAKE_BINARY_DIR}/vitaident_user.suprx vitaident_user.suprx
   FILE sce_sys/icon0.png sce_sys/icon0.png
   FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
   FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png
