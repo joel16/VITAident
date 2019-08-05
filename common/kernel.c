@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "sysroot.h"
+#include "plugin.h"
 #include "utils.h"
 
 typedef struct PsCode {

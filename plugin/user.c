@@ -1,11 +1,11 @@
 #include <psp2/kernel/modulemgr.h>
 #include <taihen.h>
 
-#include "sysroot.h"
+#include "plugin.h"
 
 // Thanks TheOfficialFloW!
-int sysroot_get_factoryfirmware(void) {
-    return k_sysroot_get_factoryfirmware();
+int User_GetFactoryFirmware(void) {
+    return Kenel_GetFactoryFirmware();
 }
 
 void _start() __attribute__ ((weak, alias("module_start")));

@@ -52,7 +52,7 @@ typedef struct SceBootArgs {
 
 extern SceBootArgs sysroot;
 
-int k_sysroot_get_factoryfirmware(void);
-int sysroot_get_factoryfirmware(void);
+int Kenel_GetFactoryFirmware(void);
+int User_GetFactoryFirmware(void);
 
 #endif

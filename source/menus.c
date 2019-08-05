@@ -4,6 +4,7 @@
 #include <vita2d.h>
 
 #include "kernel.h"
+#include "power.h"
 #include "utils.h"
 
 #define BACKGROUND_COLOUR      RGBA8(245, 245, 247, 255)
@@ -54,6 +55,31 @@ static void Menu_KernelInfo(vita2d_font *font) {
     Menu_DrawText(font, 330, 445, "PS ID:", PSID);
 }
 
+static void Menu_BatteryInfo(vita2d_font *font) {
+    char *batt_stat = NULL, *cable_stat = NULL;
+    int percent = 0, SOH = 0, count = 0, full_capacity = 0, remain_capacity = 0, temp = 0, voltage = 0;
+    
+    Power_GetBatteryStatus(&batt_stat);
+    Power_GetBatteryPercentage(&percent);
+    Power_GetBatterySOH(&SOH);
+    Power_GetBatteryCycleCount(&count);
+    Power_GetBatteryFullCapacity(&full_capacity);
+    Power_GetBatteryRemainCapacity(&remain_capacity);
+    Power_GetBatteryTemp(&temp);
+    Power_GetBatteryVoltage(&voltage);
+    Power_GetCableStatus(&cable_stat);
+
+    Menu_DrawText(font, 330, 235, "Charging:", "%s (cable %s)", batt_stat, cable_stat);
+    Menu_DrawText(font, 330, 270, "Percentage:", "%d%%", percent);
+    Menu_DrawText(font, 330, 305, "Cycle count:", "%d (SOH: %d%%)", count, SOH);
+    Menu_DrawText(font, 330, 340, "Remaining/Full Capacity:", "%i mAh/%i mAh", remain_capacity, full_capacity);
+    Menu_DrawText(font, 330, 375, "Temperature:", "%0.1f °C (%0.1f °F)", (temp / 100.0), ((1.8 * temp) / 100.0) + 32.0);
+    Menu_DrawText(font, 330, 410, "Voltage:", "%0.1f V" , (voltage / 1000.0));
+    Menu_DrawText(font, 330, 445, "CPU clock frequency:", "%d MHz", Power_GetClockFrequency(ClockFrequencyTypeCPU));
+    Menu_DrawText(font, 330, 480, "BUS clock frequency:", "%d MHz", Power_GetClockFrequency(ClockFrequencyTypeBUS));
+    Menu_DrawText(font, 330, 515, "GPU clock frequency:", "%d MHz", Power_GetClockFrequency(ClockFrequencyTypeGPU));
+}
+
 static void Menu_SetMax(int *set, int value, int max) {
 	if (*set > max)
 		*set = value;
@@ -100,7 +126,7 @@ void Menu_Main(void) {
         vita2d_draw_rectangle(0, 0, 960, 38, STATUS_BAR_COLOUR);
         vita2d_draw_rectangle(0, 38, 300, 506, MENU_BAR_COLOUR);
 
-        vita2d_font_draw_text(font, 20, ((38 - font_height) / 2) + 20, BACKGROUND_COLOUR, 25, "VITAident v0.8.0");
+        vita2d_font_draw_text(font, 20, ((38 - font_height) / 2) + 20, BACKGROUND_COLOUR, 25, "VITAident v0.80");
 
         vita2d_draw_rectangle(0, 38 + (MENU_Y_DIST * selection), 300, MENU_Y_DIST, MENU_SELECTOR_COLOUR);
 
@@ -113,6 +139,10 @@ void Menu_Main(void) {
         switch(selection) {
             case 0:
                 Menu_KernelInfo(font);
+                break;
+
+            case 2:
+                Menu_BatteryInfo(font);
                 break;
             
             default:

@@ -4,7 +4,7 @@
 
 #include "log.h"
 #include "menus.h"
-#include "sysroot.h"
+#include "plugin.h"
 #include "utils.h"
 
 SceBootArgs sysroot;
@@ -27,7 +27,7 @@ static int Init_services(void) {
     }
 
     // Get sysroot buffer
-    sysroot.factory_fw_version = sysroot_get_factoryfirmware();
+    sysroot.factory_fw_version = User_GetFactoryFirmware();
 
     if (R_SUCCEEDED(user_mod)) {
         if (R_FAILED(ret = sceKernelStopUnloadModule(user_mod, 0, NULL, 0, NULL, NULL))) {

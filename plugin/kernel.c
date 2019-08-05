@@ -4,7 +4,7 @@
 #include <taihen.h>
 
 // Thanks TheOfficialFloW!
-int k_sysroot_get_factoryfirmware(void) {
+int Kenel_GetFactoryFirmware(void) {
     SceUInt32 state = 0;
     ENTER_SYSCALL(state);
     
