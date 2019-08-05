@@ -2,51 +2,56 @@
 #include <taihen.h>
 #include <vita2d.h>
 
+#include "log.h"
 #include "menus.h"
+#include "sysroot.h"
 #include "utils.h"
 
-#define APP_PATH "ux0:app/VITAIDENT/"
-
-static SceUID vitaident_kernel_id = -1, vitaident_user_id = -1;
-
-int unload_kernel_drivers(void) {
-    if (vitaident_user_id >= 0)
-        sceKernelStopUnloadModule(vitaident_user_id, 0, NULL, 0, NULL, NULL);
-    
-    if (vitaident_kernel_id >= 0)
-        taiStopUnloadKernelModule(vitaident_kernel_id, 0, NULL, 0, NULL, NULL);
-
-    return 0;
-}
-
-int load_kernel_drivers(void) {
-    vitaident_kernel_id = taiLoadStartKernelModule(APP_PATH "vitaident_kernel.skprx", 0, NULL, 0);
-    if (vitaident_kernel_id < 0)
-        return vitaident_kernel_id;
-        
-    vitaident_user_id = sceKernelLoadStartModule(APP_PATH "vitaident_user.suprx", 0, NULL, 0, NULL, NULL);
-    if (vitaident_user_id < 0)
-        return vitaident_user_id;
-        
-    return 0;
-}
+SceBootArgs sysroot;
+int _vshKernelSearchModuleByName(const char *module, int unk[2]);
 
 static int Init_services(void) {
-    int ret = 0;
+    int search_unk[2], ret = 0;
+    SceUID kernel_mod = 0, user_mod = 0, module_check = 0;
+    
+    if (R_FAILED(module_check = _vshKernelSearchModuleByName("vitaident_kernel", search_unk))) {
+        if (R_FAILED(kernel_mod = taiLoadStartKernelModule("ux0:app/VITAIDENT/plugins/vitaident_kernel.skprx", 0, NULL, 0))) {
+            Log_Print("taiLoadStartKernelModule: 0x%lx\n", kernel_mod);
+            return kernel_mod;
+        }
+    }
 
-    if (R_FAILED(ret = load_kernel_drivers()))
-        return -1;
+    if (R_FAILED(user_mod = sceKernelLoadStartModule("ux0:app/VITAIDENT/plugins/vitaident_user.suprx", 0, NULL, 0, NULL, NULL))) {
+        Log_Print("sceKernelLoadStartModule: 0x%lx\n", user_mod);
+        return user_mod;
+    }
+
+    // Get sysroot buffer
+    sysroot.factory_fw_version = sysroot_get_factoryfirmware();
+
+    if (R_SUCCEEDED(user_mod)) {
+        if (R_FAILED(ret = sceKernelStopUnloadModule(user_mod, 0, NULL, 0, NULL, NULL))) {
+            Log_Print("sceKernelStopUnloadModule: 0x%lx\n", ret);
+            return ret;
+        }
+    }
+    
+    if (R_SUCCEEDED(kernel_mod)) {
+        if (R_FAILED(ret = taiStopUnloadKernelModule(kernel_mod, 0, NULL, 0, NULL, NULL))) {
+            // This will almost always fail because kernel function that expose syscalls cannot be unloaded.
+            // Log_Print("taiStopUnloadKernelModule: 0x%lx\n", ret);
+            // return ret;
+        }
+    }
     
     vita2d_init();
     Utils_InitAppUtil();
-
     return 0;
 }
 
 static void Term_Services(void) {
     Utils_TermAppUtil();
     vita2d_fini();
-    unload_kernel_drivers();
 }
 
 int main(int argc, char *argv[]) {

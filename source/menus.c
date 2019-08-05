@@ -1,11 +1,9 @@
 #include <psp2/ctrl.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <string.h>
 #include <vita2d.h>
 
 #include "kernel.h"
-#include "plugin.h"
 #include "utils.h"
 
 #define BACKGROUND_COLOUR      RGBA8(245, 245, 247, 255)
@@ -21,7 +19,6 @@
 #define MAX_MENU_ITEMS 8
 
 SceUInt32 pressed = 0;
-char factory_fw[8];
 
 static void Menu_DrawText(vita2d_font *font, int x, int y, char *title, const char *text, ...) {
     int title_width = 0;
@@ -37,19 +34,20 @@ static void Menu_DrawText(vita2d_font *font, int x, int y, char *title, const ch
 }
 
 static void Menu_KernelInfo(vita2d_font *font) {
-    SceUInt real_version = 0, spoofed_version = 0;
+    char real_version[8], spoofed_version[8], factory_version[8];
     char *model = NULL, *unit = NULL, *CID = NULL, *PSID = NULL;
 
-    Kernel_GetSystemSwVer(&real_version);
-    Kernel_GetSystemSwVer2(&spoofed_version);
+    Kernel_GetSystemSwVer(real_version);
+    Kernel_GetSystemSwVer2(spoofed_version);
+    Kernel_GetSystemSwVerFactory(factory_version);
     Kernel_GetProduct(&model);
     Kernel_GetUnit(&unit);
     Kernel_GetConsoleID(&CID);
     Kernel_GetPSID(&PSID);
 
-    Menu_DrawText(font, 330, 235, "System software version:", "%x", real_version);
-    Menu_DrawText(font, 330, 270, "Spoofed software version:", "%x", spoofed_version);
-    Menu_DrawText(font, 330, 305, "Factory software version:", "%x", factory_fw);
+    Menu_DrawText(font, 330, 235, "System software version:", "%s", real_version);
+    Menu_DrawText(font, 330, 270, "Spoofed software version:", "%s", spoofed_version);
+    Menu_DrawText(font, 330, 305, "Factory software version:", "%s", factory_version);
     Menu_DrawText(font, 330, 340, "Model:", model);
     Menu_DrawText(font, 330, 375, "Unit:", unit);
     Menu_DrawText(font, 330, 410, "Console ID:", CID);
@@ -64,25 +62,6 @@ static void Menu_SetMax(int *set, int value, int max) {
 static void Menu_SetMin(int *set, int value, int min) {
 	if (*set < min)
 		*set = value;
-}
-
-void firmware_string(char string[8], unsigned int version) {
-  char a = (version >> 24) & 0xf;
-  char b = (version >> 20) & 0xf;
-  char c = (version >> 16) & 0xf;
-  char d = (version >> 12) & 0xf;
-
-  memset(string, 0, 8);
-  string[0] = '0' + a;
-  string[1] = '.';
-  string[2] = '0' + b;
-  string[3] = '0' + c;
-  string[4] = '\0';
-
-  if (d) {
-    string[4] = '0' + d;
-    string[5] = '\0';
-  }
 }
 
 void Menu_Main(void) {
@@ -114,15 +93,12 @@ void Menu_Main(void) {
         "Exit"
     };
 
-    unsigned int factory_version = modoru_get_factory_firmware();
-    firmware_string(factory_fw, factory_version);
-
     while(SCE_TRUE) {
         vita2d_start_drawing();
         vita2d_clear_screen();
-
+        
         vita2d_draw_rectangle(0, 0, 960, 38, STATUS_BAR_COLOUR);
-		vita2d_draw_rectangle(0, 38, 300, 506, MENU_BAR_COLOUR);
+        vita2d_draw_rectangle(0, 38, 300, 506, MENU_BAR_COLOUR);
 
         vita2d_font_draw_text(font, 20, ((38 - font_height) / 2) + 20, BACKGROUND_COLOUR, 25, "VITAident v0.8.0");
 

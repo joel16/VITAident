@@ -15,7 +15,7 @@ set(VITA_APP_NAME "VITAident")
 set(VITA_TITLEID  "VITAIDENT")
 set(VITA_VERSION  "00.80")
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -Wall -Werror")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O3 -Wall -Werror")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(VITA_MKSFOEX_FLAGS "${VITA_MKSFOEX_FLAGS} -d PARENTAL_LEVEL=1")
 
@@ -31,16 +31,18 @@ link_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
 )
 
-add_executable(${PROJECT_NAME}
+set(VITA_ELF_NAME ${VITA_APP_NAME}.elf)
+add_executable(${VITA_ELF_NAME}
   common/kernel.c
+  source/log.c
   source/main.c
   source/menus.c
   source/utils.c
 )
 
-add_dependencies(${PROJECT_NAME} vitaident_kernel.skprx)
+add_dependencies(${VITA_ELF_NAME} vitaident_kernel.skprx)
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${VITA_ELF_NAME}
   vita2d
   freetype
   png
@@ -63,7 +65,7 @@ target_link_libraries(${PROJECT_NAME}
   vitaident_user_stub_weak
 )
 
-vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME} UNSAFE)
+vita_create_self(${PROJECT_NAME}.self ${VITA_ELF_NAME} UNSAFE UNCOMPRESSED)
 
 add_executable(vitaident_kernel
   plugin/kernel.c
@@ -110,15 +112,15 @@ vita_create_self(vitaident_user.suprx vitaident_user
 vita_create_stubs(vitaident_user_stubs vitaident_user ${CMAKE_SOURCE_DIR}/plugin/user_exports.yml)
 
 add_dependencies(vitaident_user vitaident_kernel_stubs)
-add_dependencies(${PROJECT_NAME} vitaident_kernel.skprx)
-add_dependencies(${PROJECT_NAME} vitaident_user_stubs)
-add_dependencies(${PROJECT_NAME} vitaident_user.suprx)
+add_dependencies(${VITA_ELF_NAME} vitaident_kernel.skprx)
+add_dependencies(${VITA_ELF_NAME} vitaident_user_stubs)
+add_dependencies(${VITA_ELF_NAME} vitaident_user.suprx)
 
 vita_create_vpk(${PROJECT_NAME}.vpk ${VITA_TITLEID} ${PROJECT_NAME}.self
   VERSION ${VITA_VERSION}
   NAME ${VITA_APP_NAME}
-  FILE ${CMAKE_BINARY_DIR}/vitaident_kernel.skprx vitaident_kernel.skprx
-  FILE ${CMAKE_BINARY_DIR}/vitaident_user.suprx vitaident_user.suprx
+  FILE ${CMAKE_BINARY_DIR}/vitaident_kernel.skprx plugins/vitaident_kernel.skprx
+  FILE ${CMAKE_BINARY_DIR}/vitaident_user.suprx plugins/vitaident_user.suprx
   FILE sce_sys/icon0.png sce_sys/icon0.png
   FILE sce_sys/livearea/contents/bg.png sce_sys/livearea/contents/bg.png
   FILE sce_sys/livearea/contents/startup.png sce_sys/livearea/contents/startup.png

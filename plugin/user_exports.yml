@@ -9,4 +9,4 @@ vitaident_user:
   modules:
     vitaident_user:
       functions:
-        - modoru_get_factory_firmware
+        - sysroot_get_factoryfirmware

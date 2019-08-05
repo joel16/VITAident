@@ -1,7 +1,9 @@
 #include <psp2/kernel/openpsid.h>
 #include <psp2/vshbridge.h>
 #include <stdio.h>
+#include <string.h>
 
+#include "sysroot.h"
 #include "utils.h"
 
 typedef struct PsCode {
@@ -13,8 +15,28 @@ typedef struct PsCode {
 
 int _vshSblAimgrGetPscode(PsCode *code);
 
+// Thanks TheOfficialFloW!
+static void firmware_string(char string[8], unsigned int version) {
+    char a = (version >> 24) & 0xf;
+    char b = (version >> 20) & 0xf;
+    char c = (version >> 16) & 0xf;
+    char d = (version >> 12) & 0xf;
+    
+    memset(string, 0, 8);
+    string[0] = '0' + a;
+    string[1] = '.';
+    string[2] = '0' + b;
+    string[3] = '0' + c;
+    string[4] = '\0';
+    
+    if (d) {
+        string[4] = '0' + d;
+        string[5] = '\0';
+    }
+}
+
 // Actual firmware regardless of spoofing.
-int Kernel_GetSystemSwVer(SceUInt *version) {
+int Kernel_GetSystemSwVer(char *version) {
     int ret = 0;
     SceKernelFwInfo data;
 
@@ -22,12 +44,12 @@ int Kernel_GetSystemSwVer(SceUInt *version) {
     if (R_FAILED(ret = _vshSblGetSystemSwVersion(&data)))
         return ret;
     
-    *version = data.version;
+    firmware_string(version, data.version);
     return 0;
 }
 
 // Spoofed firmware version
-int Kernel_GetSystemSwVer2(SceUInt *version) {
+int Kernel_GetSystemSwVer2(char *version) {
     int ret = 0;
     SceKernelFwInfo data;
 
@@ -35,7 +57,13 @@ int Kernel_GetSystemSwVer2(SceUInt *version) {
     if (R_FAILED(ret = sceKernelGetSystemSwVersion(&data)))
         return ret;
     
-    *version = data.version;
+    firmware_string(version, data.version);
+    return 0;
+}
+
+// Factory firmware from sysroot
+int Kernel_GetSystemSwVerFactory(char *version) {
+    firmware_string(version, sysroot.factory_fw_version);
     return 0;
 }
 
