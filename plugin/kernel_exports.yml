@@ -10,4 +10,5 @@ vitaident_kernel:
     vitaident_kernel:
       syscall: true
       functions:
+        - Kenel_GetCurrentFirmware
         - Kenel_GetFactoryFirmware

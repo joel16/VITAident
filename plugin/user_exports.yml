@@ -9,4 +9,5 @@ vitaident_user:
   modules:
     vitaident_user:
       functions:
+        - User_GetCurrentFirmware
         - User_GetFactoryFirmware

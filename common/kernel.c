@@ -37,14 +37,7 @@ static void firmware_string(char string[8], unsigned int version) {
 
 // Actual firmware regardless of spoofing.
 int Kernel_GetSystemSwVer(char *version) {
-    int ret = 0;
-    SceKernelFwInfo data;
-
-    data.size = sizeof(SceKernelFwInfo);
-    if (R_FAILED(ret = _vshSblGetSystemSwVersion(&data)))
-        return ret;
-    
-    firmware_string(version, data.version);
+    firmware_string(version, sysroot.current_fw_version);
     return 0;
 }
 

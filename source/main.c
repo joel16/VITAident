@@ -26,7 +26,8 @@ static int Init_services(void) {
         return user_mod;
     }
 
-    // Get sysroot buffer
+    // Get sysroot buffer data
+    sysroot.current_fw_version = User_GetCurrentFirmware();
     sysroot.factory_fw_version = User_GetFactoryFirmware();
 
     if (R_SUCCEEDED(user_mod)) {

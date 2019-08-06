@@ -3,6 +3,22 @@
 #include <psp2kern/kernel/sysmem.h>
 #include <taihen.h>
 
+int ksceKernelSysrootGetSystemSwVersion(void);
+
+int Kenel_GetCurrentFirmware(void) {
+    SceUInt32 state = 0;
+    ENTER_SYSCALL(state);
+    
+    unsigned int current_fw = -1;
+    int ret = ksceKernelSysrootGetSystemSwVersion();
+    
+    if (ret)
+        current_fw = ret;
+      
+    EXIT_SYSCALL(state);
+    return current_fw;
+}
+
 // Thanks TheOfficialFloW!
 int Kenel_GetFactoryFirmware(void) {
     SceUInt32 state = 0;

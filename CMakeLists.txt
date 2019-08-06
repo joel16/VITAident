@@ -81,6 +81,7 @@ set_target_properties(vitaident_kernel
 target_link_libraries(vitaident_kernel
   SceModulemgrForKernel_stub
   SceSysmemForDriver_stub
+  SceSysrootForDriver_stub
   SceSysrootForKernel_stub
   taihenForKernel_stub
 )

@@ -3,6 +3,10 @@
 
 #include "plugin.h"
 
+int User_GetCurrentFirmware(void) {
+    return Kenel_GetCurrentFirmware();
+}
+
 // Thanks TheOfficialFloW!
 int User_GetFactoryFirmware(void) {
     return Kenel_GetFactoryFirmware();
