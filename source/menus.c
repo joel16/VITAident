@@ -3,8 +3,10 @@
 #include <stdio.h>
 #include <vita2d.h>
 
-#include "kernel.h"
+#include "misc.h"
 #include "power.h"
+#include "storage.h"
+#include "system.h"
 #include "utils.h"
 
 #define BACKGROUND_COLOUR      RGBA8(245, 245, 247, 255)
@@ -17,7 +19,7 @@
 #define MENU_INFO_DESC_COLOUR  RGBA8(51, 51, 51, 255)
 
 #define MENU_Y_DIST    50
-#define MAX_MENU_ITEMS 8
+#define MAX_MENU_ITEMS 7
 
 SceUInt32 pressed = 0;
 
@@ -34,17 +36,17 @@ static void Menu_DrawText(vita2d_font *font, int x, int y, char *title, const ch
     va_end(args);
 }
 
-static void Menu_KernelInfo(vita2d_font *font) {
+static void Menu_SystemInfo(vita2d_font *font) {
     char real_version[8], spoofed_version[8], factory_version[8];
     char *model = NULL, *unit = NULL, *CID = NULL, *PSID = NULL;
 
-    Kernel_GetSystemSwVer(real_version);
-    Kernel_GetSystemSwVer2(spoofed_version);
-    Kernel_GetSystemSwVerFactory(factory_version);
-    Kernel_GetProduct(&model);
-    Kernel_GetUnit(&unit);
-    Kernel_GetConsoleID(&CID);
-    Kernel_GetPSID(&PSID);
+    System_GetSystemSwVer(real_version);
+    System_GetSystemSwVer2(spoofed_version);
+    System_GetSystemSwVerFactory(factory_version);
+    System_GetProduct(&model);
+    System_GetUnit(&unit);
+    System_GetConsoleID(&CID);
+    System_GetPSID(&PSID);
 
     Menu_DrawText(font, 330, 235, "System software version:", "%s", real_version);
     Menu_DrawText(font, 330, 270, "Spoofed software version:", "%s", spoofed_version);
@@ -77,7 +79,47 @@ static void Menu_BatteryInfo(vita2d_font *font) {
     Menu_DrawText(font, 330, 410, "Voltage:", "%0.1f V" , (voltage / 1000.0));
     Menu_DrawText(font, 330, 445, "CPU clock frequency:", "%d MHz", Power_GetClockFrequency(ClockFrequencyTypeCPU));
     Menu_DrawText(font, 330, 480, "BUS clock frequency:", "%d MHz", Power_GetClockFrequency(ClockFrequencyTypeBUS));
-    Menu_DrawText(font, 330, 515, "GPU clock frequency:", "%d MHz", Power_GetClockFrequency(ClockFrequencyTypeGPU));
+    Menu_DrawText(font, 330, 515, "GPU clock frequency:", Power_GetClockFrequency(ClockFrequencyTypeGPUXbar) > 0?
+        "%d MHz (Xbar: %d MHz)" : "%d MHz", Power_GetClockFrequency(ClockFrequencyTypeGPUXbar), 
+        Power_GetClockFrequency(ClockFrequencyTypeGPU));
+}
+
+static void Menu_StorageInfo(vita2d_font *font, vita2d_texture *texture) {
+    const char *devices[] = {
+        "ur0:",
+        "ux0:",
+        "imc0:",
+        "uma0:",
+        "xmc0:"
+    };
+    
+    SceOff sizes_total[5], sizes_free[5], sizes_used[5];
+    int ret = 0, devices_found = 0;
+    
+    for (int i = 0; i < 5; i++) {
+        if ((R_SUCCEEDED(ret = Storage_GetTotalCapacity(devices[i], &sizes_total[i]))) && 
+            (R_SUCCEEDED(ret = Storage_GetFreeCapacity(devices[i], &sizes_free[i]))) && 
+            (R_SUCCEEDED(ret = Storage_GetUsedCapacity(devices[i], &sizes_used[i]))))
+            devices_found++;
+
+        if (devices_found <= 2)
+            vita2d_draw_texture(texture, 320, 58 + (devices_found * 140));
+        else if (devices_found > 2)
+            vita2d_draw_texture(texture, 700, 58 + (devices_found * 140));
+    }
+}
+
+static void Menu_MiscInfo(vita2d_font *font) {
+    char mac[20], ip[20];
+    unsigned int percent = 0;
+
+    Misc_GetMacAddress(mac);
+    Misc_GetIPAddress(ip);
+    Misc_GetRSSIPercent(&percent);
+
+    Menu_DrawText(font, 330, 235, "MAC address:", mac);
+    Menu_DrawText(font, 330, 270, "IP address:", ip);
+    Menu_DrawText(font, 330, 305, "RSSI signal strength:", "%d%%", percent);
 }
 
 static void Menu_SetMax(int *set, int value, int max) {
@@ -104,16 +146,15 @@ void Menu_Main(void) {
 
     vita2d_set_clear_color(BACKGROUND_COLOUR);
 
-    int font_height = 0, selection = 0;
+    int font_height = 0, selection = 0, SCE_CTRL_ENTER = Utils_GetEnterButton();
     font_height = vita2d_font_text_height(font, 25, "VITAident");
 
     const char *menu_item[] = {
-        "Kernel",
         "System",
         "Battery",
         "Storage",
         "WiFi",
-        "Misc",
+        "Miscellaneous",
         "Config",
         "PSN",
         "Exit"
@@ -130,7 +171,8 @@ void Menu_Main(void) {
 
         vita2d_draw_rectangle(0, 38 + (MENU_Y_DIST * selection), 300, MENU_Y_DIST, MENU_SELECTOR_COLOUR);
 
-        vita2d_draw_texture(banner, 566, 60);
+        if ((selection != 2) || (selection != 2))
+            vita2d_draw_texture(banner, 566, 60);
 
         for (int i = 0; i < MAX_MENU_ITEMS + 1; i++) {
             vita2d_font_draw_text(font, 30, 70 + MENU_Y_DIST * i, selection == i? ITEM_SELECTED_COLOUR : ITEM_COLOUR, 25, menu_item[i]);
@@ -138,11 +180,19 @@ void Menu_Main(void) {
 
         switch(selection) {
             case 0:
-                Menu_KernelInfo(font);
+                Menu_SystemInfo(font);
+                break;
+
+            case 1:
+                Menu_BatteryInfo(font);
                 break;
 
             case 2:
-                Menu_BatteryInfo(font);
+                Menu_StorageInfo(font, drive_icon);
+                break;
+
+            case 4:
+                Menu_MiscInfo(font);
                 break;
             
             default:
@@ -162,7 +212,7 @@ void Menu_Main(void) {
         Menu_SetMax(&selection, 0, MAX_MENU_ITEMS);
         Menu_SetMin(&selection, MAX_MENU_ITEMS, 0);
         
-        if (pressed & SCE_CTRL_START)
+        if ((pressed & SCE_CTRL_START) || ((pressed & SCE_CTRL_ENTER) && (selection == MAX_MENU_ITEMS)))
             break;
     }
 

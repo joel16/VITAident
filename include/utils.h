@@ -14,6 +14,8 @@ extern SceUInt32 pressed;
 int Utils_ReadControls(void);
 int Utils_InitAppUtil(void);
 int Utils_TermAppUtil(void);
+int Utils_InitNet(void);
+int Utils_TermNet(void);
 int Utils_GetEnterButton(void);
 int Utils_GetCancelButton(void);
 
