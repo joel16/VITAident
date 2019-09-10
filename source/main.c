@@ -47,10 +47,12 @@ static int Init_services(void) {
     
     vita2d_init();
     Utils_InitAppUtil();
+    Utils_InitNet();
     return 0;
 }
 
 static void Term_Services(void) {
+    Utils_TermNet();
     Utils_TermAppUtil();
     vita2d_fini();
 }

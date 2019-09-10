@@ -1,6 +1,9 @@
 #include <psp2/apputil.h>
 #include <psp2/ctrl.h>
+#include <psp2/net/net.h>
+#include <psp2/net/netctl.h>
 #include <psp2/shellutil.h>
+#include <psp2/sysmodule.h>
 #include <psp2/system_param.h>
 #include <string.h>
 
@@ -43,6 +46,39 @@ int Utils_TermAppUtil(void) {
 	if (R_FAILED(ret = sceAppUtilShutdown()))
 		return ret;
 	
+	return 0;
+}
+
+int Utils_InitNet(void) {
+	int ret = 0;
+
+	if (sceSysmoduleIsLoaded(SCE_SYSMODULE_NET) != SCE_SYSMODULE_LOADED)
+		sceSysmoduleLoadModule(SCE_SYSMODULE_NET);
+	
+	static char memory[0x10 * 0x400];
+
+	SceNetInitParam param;
+	param.memory = memory;
+	param.size = sizeof(memory);
+	param.flags = 0;
+
+	if (R_FAILED(ret = sceNetInit(&param)))
+		return ret;
+
+	if (R_FAILED(ret = sceNetCtlInit()))
+		return ret;
+
+	return 0;
+}
+
+int Utils_TermNet(void) {
+	int ret = 0;
+
+	sceNetCtlTerm();
+
+	if (R_FAILED(ret = sceNetTerm()))
+		return ret;
+
 	return 0;
 }
 
