@@ -36,13 +36,13 @@ static void firmware_string(char string[8], unsigned int version) {
 }
 
 // Actual firmware regardless of spoofing.
-int Kernel_GetSystemSwVer(char *version) {
+int System_GetSystemSwVer(char *version) {
     firmware_string(version, sysroot.current_fw_version);
     return 0;
 }
 
 // Spoofed firmware version
-int Kernel_GetSystemSwVer2(char *version) {
+int System_GetSystemSwVer2(char *version) {
     int ret = 0;
     SceKernelFwInfo data;
 
@@ -55,13 +55,13 @@ int Kernel_GetSystemSwVer2(char *version) {
 }
 
 // Factory firmware from sysroot
-int Kernel_GetSystemSwVerFactory(char *version) {
+int System_GetSystemSwVerFactory(char *version) {
     firmware_string(version, sysroot.factory_fw_version);
     return 0;
 }
 
 // Thanks CeleseBlue and contributors: https://github.com/CelesteBlue-dev/PS-ConsoleId-wiki/blob/master/PS-ConsoleId-wiki.txt
-int Kernel_GetProduct(char **product) {
+int System_GetProduct(char **product) {
     int ret = 0;
 
     PsCode pscode;
@@ -133,7 +133,7 @@ int Kernel_GetProduct(char **product) {
     return 0;
 }
 
-int Kernel_GetUnit(char **unit) {
+int System_GetUnit(char **unit) {
     int ret = 0;
 
     PsCode pscode;
@@ -181,7 +181,7 @@ int Kernel_GetUnit(char **unit) {
     return 0;
 }
 
-int Kernel_GetConsoleID(char **CID) {
+int System_GetConsoleID(char **CID) {
     int ret = 0;
 
     char ID[16];
@@ -196,7 +196,7 @@ int Kernel_GetConsoleID(char **CID) {
     return 0;
 }
 
-int Kernel_GetPSID(char **PSID) {
+int System_GetPSID(char **PSID) {
     int ret = 0;
     SceKernelOpenPsId ID;
 

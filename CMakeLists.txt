@@ -33,8 +33,10 @@ link_directories(
 
 set(VITA_ELF_NAME ${VITA_APP_NAME}.elf)
 add_executable(${VITA_ELF_NAME}
-  common/kernel.c
+  common/misc.c
   common/power.c
+  common/storage.c
+  common/system.c
   source/log.c
   source/main.c
   source/menus.c
@@ -57,6 +59,8 @@ target_link_libraries(${VITA_ELF_NAME}
   SceCtrl_stub
   SceDisplay_stub
   SceGxm_stub
+  SceNet_stub
+  SceNetCtl_stub
   ScePower_stub
   SceRtc_stub
   SceShellSvc_stub
